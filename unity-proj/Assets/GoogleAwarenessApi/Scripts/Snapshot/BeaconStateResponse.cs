@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace NinevaStudios.AwarenessApi
 {
-	public sealed class BeaconStateResult : MonoBehaviour
+	public sealed class BeaconStateResponse : MonoBehaviour
 	{
 
 	}

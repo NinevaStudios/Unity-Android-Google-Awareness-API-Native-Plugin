@@ -1,7 +1,6 @@
 ﻿namespace NinevaStudios.AwarenessApi
 {
-	public sealed class HeadphoneStateResult
+	public sealed class PlacesResponse
 	{
-		
 	}
 }

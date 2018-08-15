@@ -3,7 +3,7 @@
 namespace NinevaStudios.AwarenessApi
 {
 	[PublicAPI]
-	public class WeatherResult
+	public class LocationResponse
 	{
 		
 	}

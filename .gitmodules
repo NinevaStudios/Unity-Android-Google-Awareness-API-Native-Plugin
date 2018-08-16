@@ -1,0 +1,3 @@
+[submodule "unity-proj/Assets/GoogleAwarenessApi/Scripts/Internal/JniToolkit"]
+	path = unity-proj/Assets/GoogleAwarenessApi/Scripts/Internal/JniToolkit
+	url = git@github.com:NinevaStudios/Unity-Android-JNI-Toolkit.git

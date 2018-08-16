@@ -1,4 +1,5 @@
 ﻿using System;
+using DeadMosquito.GoogleMapsView.Internal;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -8,7 +9,7 @@ namespace NinevaStudios.AwarenessApi.Internal
 	{
 		readonly Action<string> _failure;
 
-		public OnFailureListenerProxy(Action<string> failure) : base("com.google.android.gms.tasks.OnSuccessListener")
+		public OnFailureListenerProxy(Action<string> failure) : base("com.google.android.gms.tasks.OnFailureListener")
 		{
 			_failure = failure;
 		}
@@ -16,7 +17,7 @@ namespace NinevaStudios.AwarenessApi.Internal
 		[UsedImplicitly]
 		void onFailure(AndroidJavaObject exception)
 		{
-			Debug.Log("onFailure");
+			AwarenessSceneHelper.Queue(() => _failure(exception.CallStr("getMessage")));
 		}
 	}
 }

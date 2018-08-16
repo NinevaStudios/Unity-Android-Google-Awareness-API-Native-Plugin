@@ -3,8 +3,7 @@
 namespace NinevaStudios.AwarenessApi
 {
 	[PublicAPI]
-	public class TimeIntervalsResponse
+	public class TimeIntervals
 	{
-		public Location Location;
 	}
 }

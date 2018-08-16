@@ -53,18 +53,7 @@ namespace NinevaStudios.AwarenessApi
 				.CallAJO("addOnFailureListener", new OnFailureListenerProxy(onFailure));
 		}
 
-		static bool CheckPreconditions()
-		{
-			if (JniToolkitUtils.IsNotAndroidRuntime)
-			{
-				return true;
-			}
-
-			CreateClientLazy();
-			return false;
-		}
-
-		public static void GetLocation(Action<LocationResponse> onSuccess)
+		public static void GetLocation(Action<Location> onSuccess, Action<string> onFailure)
 		{
 			if (JniToolkitUtils.IsNotAndroidRuntime)
 			{
@@ -72,6 +61,10 @@ namespace NinevaStudios.AwarenessApi
 			}
 			
 			CreateClientLazy();
+			
+			_client.CallAJO("getHeadphoneState")
+				.CallAJO("addOnSuccessListener", new OnSuccessListenerProxy<Location>(onSuccess, ajo => Location.FromAJO(ajo.CallAJO("getLocation"))))
+				.CallAJO("addOnFailureListener", new OnFailureListenerProxy(onFailure));
 		}
 
 		public static void GetPlaces(Action<PlacesResponse> onSuccess)
@@ -94,7 +87,7 @@ namespace NinevaStudios.AwarenessApi
 			CreateClientLazy();
 		}
 
-		public static void GetWeather(Action<WeatherResponse> onSuccess)
+		public static void GetWeather(Action<Weather> onSuccess, Action<string> onFailure)
 		{
 			if (JniToolkitUtils.IsNotAndroidRuntime)
 			{
@@ -113,6 +106,17 @@ namespace NinevaStudios.AwarenessApi
 
 			_client = AwarenessClass.AJCCallStaticOnceAJO("getSnapshotClient", JniToolkitUtils.Activity);
 			AwarenessSceneHelper.Init();
+		}
+
+		static bool CheckPreconditions()
+		{
+			if (JniToolkitUtils.IsNotAndroidRuntime)
+			{
+				return true;
+			}
+
+			CreateClientLazy();
+			return false;
 		}
 	}
 }

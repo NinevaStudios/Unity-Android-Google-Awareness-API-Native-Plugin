@@ -1,4 +1,8 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using System.Linq;
+using GoogleAwarenessApi.Scripts.Internal;
+using JetBrains.Annotations;
+using UnityEngine;
 
 namespace NinevaStudios.AwarenessApi
 {
@@ -6,8 +10,10 @@ namespace NinevaStudios.AwarenessApi
 	///     Weather conditions at the device's current location.
 	/// </summary>
 	[PublicAPI]
-	public class Weather
+	public class Weather : IDisposable
 	{
+		readonly AndroidJavaObject _ajo;
+
 		/// <summary>
 		/// Temperature unit
 		/// </summary>
@@ -82,10 +88,22 @@ namespace NinevaStudios.AwarenessApi
 			Windy = 9
 		}
 
+		public Weather(AndroidJavaObject ajo)
+		{
+			_ajo = ajo;
+		}
+
 		/// <summary>
 		/// Returns the current weather conditions as an array of values that best describe the current conditions.
 		/// </summary>
-		public Condition[] Conditions { get; set; }
+		public Condition[] Conditions
+		{
+			get
+			{
+				var conditions = _ajo.Call<int[]>("getConditions");
+				return conditions.Cast<Condition>().ToArray();
+			}
+		}
 
 		/// <summary>
 		/// Returns the dew point at the device's current location.
@@ -94,7 +112,7 @@ namespace NinevaStudios.AwarenessApi
 		/// <returns>The current dewpoint at the device's current location.</returns>
 		public float GetDewPoint(TemperatureUnit temperatureUnit)
 		{
-			return 0;
+			return _ajo.CallFloat("getDewPoint", (int) temperatureUnit);
 		}
 
 		/// <summary>
@@ -104,7 +122,7 @@ namespace NinevaStudios.AwarenessApi
 		/// <returns>The current "feels-like" temperature at the device location.</returns>
 		public float GetFeelsLikeTemperature(TemperatureUnit temperatureUnit)
 		{
-			return 0;
+			return _ajo.CallFloat("getFeelsLikeTemperature", (int) temperatureUnit);
 		}
 
 		/// <summary>
@@ -114,18 +132,28 @@ namespace NinevaStudios.AwarenessApi
 		/// <returns>The current temperature at the device location.</returns>
 		public float GetTemperature(TemperatureUnit temperatureUnit)
 		{
-			return 0;
+			return _ajo.CallFloat("getTemperature", (int) temperatureUnit);
 		}
 
 		/// <summary>
 		/// The current humidity level in percentage (0 - 100%) at the device's current location.
 		/// </summary>
-		public int Humidity { get; set; }
+		public int Humidity
+		{
+			get { return _ajo.CallInt("getHumidity"); }
+		}
+
 
 		public override string ToString()
 		{
+			var conditions = AwarenessUtils.CommaJoin(Conditions);
 			return string.Format("Conditions: {0}, Humidity: {1}, DewPoint: {2}, Temperature: {3}, Feels LikeTemperature: {4}",
-				Conditions, Humidity, GetDewPoint(TemperatureUnit.Celsius), GetTemperature(TemperatureUnit.Celsius), GetFeelsLikeTemperature(TemperatureUnit.Celsius));
+				conditions, Humidity, GetDewPoint(TemperatureUnit.Celsius), GetTemperature(TemperatureUnit.Celsius), GetFeelsLikeTemperature(TemperatureUnit.Celsius));
+		}
+
+		public void Dispose()
+		{
+			_ajo.Dispose();
 		}
 	}
 }

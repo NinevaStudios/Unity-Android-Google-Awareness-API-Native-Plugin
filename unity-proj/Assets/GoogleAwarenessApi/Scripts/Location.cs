@@ -161,5 +161,21 @@ namespace NinevaStudios.AwarenessApi
 				return result;
 			}
 		}
+
+		public override string ToString()
+		{
+			return string.Format("[Location: Latitude={0}, Longitude={1}, " +
+			                     "HasAccuracy={2}, Accuracy={3}, " +
+			                     "Timestamp={4}, " +
+			                     "HasSpeed={5}, Speed={6}, " +
+			                     "HasBearing={7}, Bearing={8}, " +
+			                     "IsFromMockProvider={9}]",
+				Latitude, Longitude,
+				HasAccuracy, Accuracy,
+				Timestamp,
+				HasSpeed, Speed,
+				HasBearing, Bearing,
+				IsFromMockProvider);
+		}
 	}
 }

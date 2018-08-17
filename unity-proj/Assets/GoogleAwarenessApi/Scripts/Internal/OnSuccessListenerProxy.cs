@@ -21,7 +21,6 @@ namespace NinevaStudios.AwarenessApi.Internal
 		void onSuccess(AndroidJavaObject result)
 		{
 			AwarenessSceneHelper.Queue(() => _success(_converter(result)));
-			Debug.Log("onSuccess");
 		}
 	}
 }

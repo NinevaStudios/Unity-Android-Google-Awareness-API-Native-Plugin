@@ -3,8 +3,7 @@
 namespace NinevaStudios.AwarenessApi
 {
 	[PublicAPI]
-	public class LocationResponse
+	class LatLngBounds
 	{
-		
 	}
 }

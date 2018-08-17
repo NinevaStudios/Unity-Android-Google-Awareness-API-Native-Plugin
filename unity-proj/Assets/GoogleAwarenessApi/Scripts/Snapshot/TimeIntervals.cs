@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using GoogleAwarenessApi.Scripts.Internal;
+using JetBrains.Annotations;
 
 namespace NinevaStudios.AwarenessApi
 {
@@ -14,7 +15,7 @@ namespace NinevaStudios.AwarenessApi
 
 		public override string ToString()
 		{
-			return base.ToString();
+			return CurrentTimeIntervals.CommaJoin();
 		}
 	}
 }

@@ -146,7 +146,7 @@ namespace NinevaStudios.AwarenessApi
 
 		public override string ToString()
 		{
-			var conditions = AwarenessUtils.CommaJoin(Conditions);
+			var conditions = Conditions.CommaJoin();
 			return string.Format("Conditions: {0}, Humidity: {1}, DewPoint: {2}, Temperature: {3}, Feels LikeTemperature: {4}",
 				conditions, Humidity, GetDewPoint(TemperatureUnit.Celsius), GetTemperature(TemperatureUnit.Celsius), GetFeelsLikeTemperature(TemperatureUnit.Celsius));
 		}

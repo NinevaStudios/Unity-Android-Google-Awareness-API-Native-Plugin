@@ -1,14 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NinevaStudios.AwarenessApi;
 
 namespace GoogleAwarenessApi.Scripts.Internal
 {
-	public class AwarenessUtils
+	public static class AwarenessUtils
 	{
-		public static string CommaJoin(Weather.Condition[] items)
+		public static string CommaJoin<T>(this IEnumerable<T> items)
 		{
-			return String.Join(",", items.Select(x => x.ToString()).ToArray());
+			return string.Join(",", items.Select(x => x.ToString()).ToArray());
 		}
 	}
 }

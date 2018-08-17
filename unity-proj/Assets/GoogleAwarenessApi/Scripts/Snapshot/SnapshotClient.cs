@@ -16,7 +16,7 @@ namespace NinevaStudios.AwarenessApi
 
 		static AndroidJavaObject _client;
 
-		public static void GetBeaconState(Action<BeaconStateResponse> onSuccess)
+		public static void GetBeaconState(Action<BeaconStateResponse> onSuccess, Action<string> onFailure)
 		{
 			if (JniToolkitUtils.IsNotAndroidRuntime)
 			{
@@ -26,7 +26,7 @@ namespace NinevaStudios.AwarenessApi
 			CreateClientLazy();
 		}
 
-		public static void GetDetectedActivity(Action<DetectedActivityResponse> onSuccess)
+		public static void GetDetectedActivity(Action<DetectedActivityResponse> onSuccess, Action<string> onFailure)
 		{
 			if (JniToolkitUtils.IsNotAndroidRuntime)
 			{
@@ -77,10 +77,8 @@ namespace NinevaStudios.AwarenessApi
 			CreateClientLazy();
 			
 			_client.CallAJO("getPlaces")
-				.CallAJO("addOnSuccessListener", new OnSuccessListenerProxy<List<PlaceLikelihood>>(onSuccess, ajo =>
-				{
-					return null; // TODO
-				}))
+				.CallAJO("addOnSuccessListener", new OnSuccessListenerProxy<List<PlaceLikelihood>>(onSuccess,
+					ajo => ajo.CallAJO("getPlaceLikelihoods").FromJavaList(PlaceLikelihood.FromAJO)))
 				.CallAJO("addOnFailureListener", new OnFailureListenerProxy(onFailure));
 		}
 

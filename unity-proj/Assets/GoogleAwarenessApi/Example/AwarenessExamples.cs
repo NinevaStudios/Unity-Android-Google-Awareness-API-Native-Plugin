@@ -7,6 +7,12 @@ using UnityEngine;
 public class AwarenessExamples : MonoBehaviour {
 
 	#region snaphsot_API
+	
+	[UsedImplicitly]
+	public void OnGetDetectedActivity()
+	{
+		SnapshotClient.GetDetectedActivity(activity => Debug.Log(activity), Debug.LogError);
+	}
 
 	[UsedImplicitly]
 	public void OnGetHeadphonesState()
@@ -30,6 +36,18 @@ public class AwarenessExamples : MonoBehaviour {
 	public void OnGetTimeIntervals()
 	{
 		SnapshotClient.GetTimeIntervals(intervals => Debug.Log(intervals), Debug.LogError);
+	}
+	
+	[UsedImplicitly]
+	public void OnGetNearbyPlaces()
+	{
+		SnapshotClient.GetPlaces(intervals => Debug.Log(intervals), Debug.LogError);
+	}
+	
+	[UsedImplicitly]
+	public void OnGetBeaconState()
+	{
+		SnapshotClient.GetBeaconState(beaconState => Debug.Log(beaconState), Debug.LogError);
 	}
 
 	#endregion

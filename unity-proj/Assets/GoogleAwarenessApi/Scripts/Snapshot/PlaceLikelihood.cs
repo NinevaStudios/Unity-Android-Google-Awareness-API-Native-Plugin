@@ -1,4 +1,5 @@
 ﻿using JetBrains.Annotations;
+using UnityEngine;
 
 namespace NinevaStudios.AwarenessApi
 {
@@ -8,6 +9,15 @@ namespace NinevaStudios.AwarenessApi
 	[PublicAPI]
 	public sealed class PlaceLikelihood
 	{
+		readonly float _likelihood;
+		readonly Place _place;
+
+		PlaceLikelihood(float likelihood, Place place)
+		{
+			_likelihood = likelihood;
+			_place = place;
+		}
+
 		/// <summary>
 		/// Returns a value indicating the degree of confidence that the device is at the corresponding <see cref="Place"/>.
 		///
@@ -24,6 +34,11 @@ namespace NinevaStudios.AwarenessApi
 		Place Place
 		{
 			get { return null; }
+		}
+
+		public static PlaceLikelihood FromAJO(AndroidJavaObject ajo)
+		{
+			return new PlaceLikelihood(ajo.CallFloat("getLikelihood"), Place.FromAJO(ajo.CallAJO("getPlace")));
 		}
 	}
 }

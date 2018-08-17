@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using JetBrains.Annotations;
+using UnityEngine;
 
 namespace NinevaStudios.AwarenessApi
 {
@@ -473,5 +474,10 @@ namespace NinevaStudios.AwarenessApi
 		/// </summary>
 		[PublicAPI]
 		public string WebsiteUrl { get; private set; }
+
+		public static Place FromAJO(AndroidJavaObject ajo)
+		{
+			throw new System.NotImplementedException();
+		}
 	}
 }

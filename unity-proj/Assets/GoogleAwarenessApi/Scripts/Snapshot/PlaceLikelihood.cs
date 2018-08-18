@@ -9,13 +9,10 @@ namespace NinevaStudios.AwarenessApi
 	[PublicAPI]
 	public sealed class PlaceLikelihood
 	{
-		readonly float _likelihood;
-		readonly Place _place;
-
 		PlaceLikelihood(float likelihood, Place place)
 		{
-			_likelihood = likelihood;
-			_place = place;
+			Likelihood = likelihood;
+			Place = place;
 		}
 
 		/// <summary>
@@ -23,18 +20,12 @@ namespace NinevaStudios.AwarenessApi
 		///
 		/// The degree of confidence that the device is at this place, expressed as a decimal value between 0.0 and 1.0.
 		/// </summary>
-		float Likelihood
-		{
-			get { return 0; }
-		}
+		public float Likelihood { get; private set; }
 
 		/// <summary>
 		/// Returns the place associated with this <see cref="PlaceLikelihood"/>.
 		/// </summary>
-		Place Place
-		{
-			get { return null; }
-		}
+		public Place Place { get; private set; }
 
 		public static PlaceLikelihood FromAJO(AndroidJavaObject ajo)
 		{
@@ -43,7 +34,7 @@ namespace NinevaStudios.AwarenessApi
 
 		public override string ToString()
 		{
-			return string.Format("Likelihood: {0}, Place: {1}", _likelihood, _place);
+			return string.Format("Likelihood: {0}, Place: {1}", Likelihood, Place);
 		}
 	}
 }

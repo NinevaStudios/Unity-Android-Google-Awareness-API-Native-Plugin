@@ -153,7 +153,10 @@ namespace NinevaStudios.AwarenessApi
 
 		public void Dispose()
 		{
-			_ajo.Dispose();
+			if (_ajo != null)
+			{
+				_ajo.Dispose();
+			}
 		}
 	}
 }

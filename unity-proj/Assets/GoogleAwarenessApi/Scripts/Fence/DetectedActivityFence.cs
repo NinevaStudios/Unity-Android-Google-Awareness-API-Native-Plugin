@@ -3,7 +3,8 @@
 namespace NinevaStudios.AwarenessApi
 {
 	[PublicAPI]
-	public sealed class FenceUpdateRequest
+	public class DetectedActivityFence
 	{
+		
 	}
 }

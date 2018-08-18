@@ -7,8 +7,9 @@ using UnityEngine;
 namespace NinevaStudios.AwarenessApi
 {
 	[PublicAPI]
-	class Place
+	public class Place
 	{
+		[PublicAPI]
 		public enum PlaceType
 		{
 			[PublicAPI]

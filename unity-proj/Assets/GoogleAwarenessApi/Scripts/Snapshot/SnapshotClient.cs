@@ -8,6 +8,11 @@ using UnityEngine;
 
 namespace NinevaStudios.AwarenessApi
 {
+	/// <summary>
+	/// Main class to interact with snapshot API
+	///
+	/// See https://developers.google.com/android/reference/com/google/android/gms/awareness/SnapshotClient
+	/// </summary>
 	[PublicAPI]
 	public static class SnapshotClient
 	{

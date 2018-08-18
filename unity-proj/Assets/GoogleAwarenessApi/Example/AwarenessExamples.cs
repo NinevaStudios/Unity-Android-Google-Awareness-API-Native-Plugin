@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using NinevaStudios.AwarenessApi;
 using UnityEngine;
 
@@ -41,7 +39,7 @@ public class AwarenessExamples : MonoBehaviour {
 	[UsedImplicitly]
 	public void OnGetNearbyPlaces()
 	{
-		SnapshotClient.GetPlaces(intervals => Debug.Log(intervals), Debug.LogError);
+		SnapshotClient.GetPlaces(places => places.ForEach(Debug.Log), Debug.LogError);
 	}
 	
 	[UsedImplicitly]

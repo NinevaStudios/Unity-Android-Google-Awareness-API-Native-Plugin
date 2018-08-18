@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using GoogleAwarenessApi.Scripts.Internal;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -396,7 +398,7 @@ namespace NinevaStudios.AwarenessApi
 			[PublicAPI]
 			TransitStation = 1030
 		}
-		
+
 		[PublicAPI]
 		Place()
 		{
@@ -477,7 +479,38 @@ namespace NinevaStudios.AwarenessApi
 
 		public static Place FromAJO(AndroidJavaObject ajo)
 		{
-			throw new System.NotImplementedException();
+			var result = new Place
+			{
+				Id = ajo.CallStr("getId"),
+				Address = ajo.CallStr("getAddress"),
+				Attrubutions = ajo.CallStr("getAttributions"),
+				Name = ajo.CallStr("getName"),
+				PhoneNumber = ajo.CallStr("getPhoneNumber"),
+				PlaceTypes = ajo.CallAJO("getPlaceTypes").FromJavaList(x => (PlaceType) x.CallInt("intValue")),
+				PriceLevel = ajo.CallInt("getPriceLevel"),
+				Rating = ajo.CallFloat("getRating"),
+				Location = LatLng.FromAJO(ajo.CallAJO("getLatLng")),
+			};
+			if (!ajo.CallAJO("getLocale").IsJavaNull())
+			{
+				result.Locale = ajo.CallAJO("getLocale").JavaToString();
+			}
+			if (!ajo.CallAJO("getViewport").IsJavaNull())
+			{
+				result.Viewport = LatLngBounds.FromAJO(ajo.CallAJO("getViewport"));
+			}
+			if (!ajo.CallAJO("getWebsiteUri").IsJavaNull())
+			{
+				result.WebsiteUrl = ajo.CallAJO("getWebsiteUri").JavaToString();
+			}
+			return result;
+		}
+
+		public override string ToString()
+		{
+			return string.Format(
+				"Id: {0}, Address: {1}, Attrubutions: {2}, Name: {3}, PhoneNumber: {4}, Locale: {5}, PlaceTypes: {6}, PriceLevel: {7}, Rating: {8}, Location: {9}, Viewport: {10}, WebsiteUrl: {11}",
+				Id, Address, Attrubutions, Name, PhoneNumber, Locale, PlaceTypes.CommaJoin(), PriceLevel, Rating, Location, Viewport, WebsiteUrl);
 		}
 	}
 }

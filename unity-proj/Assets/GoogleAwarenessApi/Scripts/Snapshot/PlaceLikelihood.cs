@@ -40,5 +40,10 @@ namespace NinevaStudios.AwarenessApi
 		{
 			return new PlaceLikelihood(ajo.CallFloat("getLikelihood"), Place.FromAJO(ajo.CallAJO("getPlace")));
 		}
+
+		public override string ToString()
+		{
+			return string.Format("Likelihood: {0}, Place: {1}", _likelihood, _place);
+		}
 	}
 }

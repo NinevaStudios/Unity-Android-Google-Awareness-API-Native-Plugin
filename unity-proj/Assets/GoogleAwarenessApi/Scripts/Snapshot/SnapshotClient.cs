@@ -26,7 +26,7 @@ namespace NinevaStudios.AwarenessApi
 			CreateClientLazy();
 		}
 
-		public static void GetDetectedActivity(Action<DetectedActivityResponse> onSuccess, Action<string> onFailure)
+		public static void GetDetectedActivity(Action<ActivityRecognitionResult> onSuccess, Action<string> onFailure)
 		{
 			if (JniToolkitUtils.IsNotAndroidRuntime)
 			{
@@ -34,6 +34,11 @@ namespace NinevaStudios.AwarenessApi
 			}
 			
 			CreateClientLazy();
+			
+			_client.CallAJO("getDetectedActivity")
+				.CallAJO("addOnSuccessListener", new OnSuccessListenerProxy<ActivityRecognitionResult>(onSuccess, 
+						ajo => ActivityRecognitionResult.FromAJO(ajo.CallAJO("getActivityRecognitionResult"))))
+				.CallAJO("addOnFailureListener", new OnFailureListenerProxy(onFailure));
 		}
 
 		/// <summary>

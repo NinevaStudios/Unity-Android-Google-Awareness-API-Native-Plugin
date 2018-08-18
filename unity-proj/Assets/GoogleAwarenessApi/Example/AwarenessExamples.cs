@@ -1,52 +1,73 @@
 ﻿using JetBrains.Annotations;
 using NinevaStudios.AwarenessApi;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class AwarenessExamples : MonoBehaviour {
-
+public class AwarenessExamples : MonoBehaviour
+{
+	[SerializeField]
+	Text text;
+	
 	#region snaphsot_API
 	
 	[UsedImplicitly]
 	public void OnGetDetectedActivity()
 	{
-		SnapshotClient.GetDetectedActivity(activity => Debug.Log(activity), Debug.LogError);
+		SnapshotClient.GetDetectedActivity(result =>
+		{
+			Debug.Log("Still confidence: " + result.GetActivityConfidence(DetectedActivity.Type.Still));
+			Debug.Log("Running confidence: " + result.GetActivityConfidence(DetectedActivity.Type.Running));
+			LogSuccess(result);
+		}, LogFailure);
 	}
 
 	[UsedImplicitly]
 	public void OnGetHeadphonesState()
 	{
-		SnapshotClient.GetHeadphoneState(state => Debug.Log(state), Debug.LogError);
+		SnapshotClient.GetHeadphoneState(state => LogSuccess(state), LogFailure);
 	}
-	
+
 	[UsedImplicitly]
 	public void OnGetWeather()
 	{
-		SnapshotClient.GetWeather(Debug.Log, Debug.LogError);
+		SnapshotClient.GetWeather(LogSuccess, LogFailure);
 	}
-	
+
 	[UsedImplicitly]
 	public void OnGetLocation()
 	{
-		SnapshotClient.GetLocation(weather => Debug.Log(weather), Debug.LogError);
+		SnapshotClient.GetLocation(location => LogSuccess(location), LogFailure);
 	}
-	
+
 	[UsedImplicitly]
 	public void OnGetTimeIntervals()
 	{
-		SnapshotClient.GetTimeIntervals(intervals => Debug.Log(intervals), Debug.LogError);
+		SnapshotClient.GetTimeIntervals(LogSuccess, LogFailure);
 	}
-	
+
 	[UsedImplicitly]
 	public void OnGetNearbyPlaces()
 	{
-		SnapshotClient.GetPlaces(places => places.ForEach(Debug.Log), Debug.LogError);
+		SnapshotClient.GetPlaces(places => places.ForEach(LogSuccess), LogFailure);
 	}
-	
+
 	[UsedImplicitly]
 	public void OnGetBeaconState()
 	{
-		SnapshotClient.GetBeaconState(beaconState => Debug.Log(beaconState), Debug.LogError);
+		SnapshotClient.GetBeaconState(LogSuccess, LogFailure);
 	}
 
 	#endregion
+
+	void LogFailure(string err)
+	{
+		text.text = err;
+		Debug.LogError(err);
+	}
+
+	void LogSuccess(object result)
+	{
+		text.text = result.ToString();
+		Debug.Log(result);
+	}
 }

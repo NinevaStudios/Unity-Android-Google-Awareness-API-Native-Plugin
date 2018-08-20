@@ -30,3 +30,13 @@ dependencies {
     implementation 'com.google.android.gms:play-services-awareness:15.0.1'
 
 }
+
+task copyAarToUnity << {
+    project.copy {
+        from "$buildDir/outputs/aar"
+        include '*release.aar'
+        into "../../unity-proj/Assets/Plugins/Android"
+    }
+}
+
+tasks.build.finalizedBy copyAarToUnity

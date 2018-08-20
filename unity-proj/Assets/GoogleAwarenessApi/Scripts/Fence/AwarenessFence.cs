@@ -12,7 +12,7 @@ namespace NinevaStudios.AwarenessApi
 	[PublicAPI]
 	public class AwarenessFence : IDisposable
 	{
-		const string AwarenessFenceClass = "com.google.android.gms.awareness.fence.AwarenessFence";
+		public const string AwarenessFenceClass = "com.google.android.gms.awareness.fence.AwarenessFence";
 
 		public AndroidJavaObject AJO { get; private set; }
 
@@ -57,7 +57,7 @@ namespace NinevaStudios.AwarenessApi
 		/// <returns>The resulting awareness fence.</returns>
 		public static AwarenessFence Not(AwarenessFence fence)
 		{
-			return null;
+			return new AwarenessFence(AwarenessFenceClass.AJCCallStaticOnceAJO("not", fence.AJO));
 		}
 
 		/// <summary>
@@ -67,12 +67,18 @@ namespace NinevaStudios.AwarenessApi
 		/// <returns>The resulting combined awareness fence.</returns>
 		public static AwarenessFence Or(params AwarenessFence[] fences)
 		{
-			return null;
+			var androidJavaObject = fences.ToList().ToJavaList(x => x.AJO);
+			return new AwarenessFence(AwarenessFenceClass.AJCCallStaticOnceAJO("or", androidJavaObject));
 		}
 
+		/// <summary>
+		///     Create an awareness fence that is the logical OR of the specified fences.
+		/// </summary>
+		/// <param name="fences">Collection of fences that should be combined with OR.</param>
+		/// <returns>The resulting combined awareness fence.</returns>
 		public static AwarenessFence Or(IEnumerable<AwarenessFence> fences)
 		{
-			return null;
+			return Or(fences.ToArray());
 		}
 	}
 }

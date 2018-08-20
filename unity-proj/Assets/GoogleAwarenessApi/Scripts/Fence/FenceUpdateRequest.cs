@@ -38,7 +38,7 @@ namespace NinevaStudios.AwarenessApi
 			/// <returns>This <see cref="FenceUpdateRequest.Builder"/> object.</returns>
 			public Builder AddFence(string fenceKey, AwarenessFence fence)
 			{
-				AndroidJavaObject intent = null; // TODO
+				AndroidJavaObject intent = FenceClient.AwarenessManagerClass.AJCCallStaticOnceAJO("getPendingIntent", JniToolkitUtils.Activity);
 				_ajo.CallAJO("addFence", fenceKey, fence.AJO, intent);
 				return this;
 			}

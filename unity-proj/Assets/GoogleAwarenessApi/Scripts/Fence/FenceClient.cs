@@ -15,6 +15,8 @@ namespace NinevaStudios.AwarenessApi
 	[PublicAPI]
 	public class FenceClient
 	{
+		public const string AwarenessManagerClass = "com.ninevastudios.awareness.AwarenessManager";
+		
 		static AndroidJavaObject _client;
 
 		public static void UpdateFences(FenceUpdateRequest fenceUpdateRequest, Action onSuccess, Action<string> onFailure)
@@ -48,7 +50,8 @@ namespace NinevaStudios.AwarenessApi
 				return;
 			}
 
-			_client = AwarenessUtils.AwarenessClass.AJCCallStaticOnceAJO("getSnapshotClient", JniToolkitUtils.Activity);
+			_client = AwarenessUtils.AwarenessClass.AJCCallStaticOnceAJO("getFenceClient", JniToolkitUtils.Activity);
+			AwarenessManagerClass.AJCCallStaticOnce("register", JniToolkitUtils.Activity);
 			AwarenessSceneHelper.Init();
 		}
 	}

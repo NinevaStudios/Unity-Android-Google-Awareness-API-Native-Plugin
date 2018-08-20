@@ -1,6 +1,7 @@
-package com.ninevastudios.lib;
+package com.ninevastudios.awareness;
 
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -17,12 +18,25 @@ public class AwarenessManager {
     private static final String TAG = AwarenessManager.class.getSimpleName();
     private static final String FENCE_RECEIVER_ACTION = BuildConfig.APPLICATION_ID + "FENCE_RECEIVER_ACTION";
     private static FenceReceiver receiver;
+    private static PendingIntent pendingIntent;
 
+    @Keep
     public static void register(Activity activity) {
         receiver = new FenceReceiver();
         activity.registerReceiver(receiver, new IntentFilter(FENCE_RECEIVER_ACTION));
     }
 
+    @Keep
+    public static PendingIntent getPendingIntent(Activity activity) {
+        if (pendingIntent == null) {
+            Intent intent = new Intent(FENCE_RECEIVER_ACTION);
+            pendingIntent = PendingIntent.getBroadcast(activity, 0, intent, 0);
+        }
+
+        return pendingIntent;
+    }
+
+    @Keep
     public static class FenceReceiver extends BroadcastReceiver {
 
         @Override

@@ -16,7 +16,7 @@ namespace NinevaStudios.AwarenessApi
 
 		readonly AndroidJavaObject _ajo;
 
-		AwarenessFence(AndroidJavaObject ajo)
+		internal AwarenessFence(AndroidJavaObject ajo)
 		{
 			_ajo = ajo;
 		}

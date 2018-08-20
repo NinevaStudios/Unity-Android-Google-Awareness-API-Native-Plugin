@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using JetBrains.Annotations;
 using NinevaStudios.AwarenessApi;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,6 +9,8 @@ public class AwarenessExamples : MonoBehaviour
 	[SerializeField]
 	Text text;
 	
+	const string FenceKey = "fence_key";
+	
 	#region snaphsot_API
 	
 	[UsedImplicitly]
@@ -15,8 +18,8 @@ public class AwarenessExamples : MonoBehaviour
 	{
 		SnapshotClient.GetDetectedActivity(result =>
 		{
-			Debug.Log("Still confidence: " + result.GetActivityConfidence(DetectedActivity.Type.Still));
-			Debug.Log("Running confidence: " + result.GetActivityConfidence(DetectedActivity.Type.Running));
+			Debug.Log("Still confidence: " + result.GetActivityConfidence(DetectedActivity.ActivityType.Still));
+			Debug.Log("Running confidence: " + result.GetActivityConfidence(DetectedActivity.ActivityType.Running));
 			LogSuccess(result);
 		}, LogFailure);
 	}
@@ -55,6 +58,56 @@ public class AwarenessExamples : MonoBehaviour
 	public void OnGetBeaconState()
 	{
 		SnapshotClient.GetBeaconState(LogSuccess, LogFailure);
+	}
+
+	#endregion
+
+	#region fences_api
+
+	void SetupFences()
+	{
+		// DetectedActivityFence will fire when it detects the user performing the specified
+		// activity.  In this case it's walking.
+		var walkingFence = DetectedActivityFence.During(DetectedActivityFence.ActivityType.Walking);
+		
+		// There are lots of cases where it's handy for the device to know if headphones have been
+		// plugged in or unplugged.  For instance, if a music app detected your headphones fell out
+		// when you were in a library, it'd be pretty considerate of the app to pause itself before
+		// the user got in trouble.
+		var headphoneFence = HeadphoneFence.During(HeadphoneState.PluggedIn);
+		
+		// Combines multiple fences into a compound fence.  While the first two fences trigger
+		// individually, this fence will only trigger its callback when all of its member fences
+		// hit a true state.
+		var walkingWithHeadphones = AwarenessFence.And(walkingFence, headphoneFence);
+		
+		// We can even nest compound fences.  Using both "and" and "or" compound fences, this
+		// compound fence will determine when the user has headphones in and is engaging in at least
+		// one form of exercise.
+		// The below breaks down to "(headphones plugged in) AND (walking OR running OR bicycling)"
+		var exercisingWithHeadphonesFence = AwarenessFence.And(
+			headphoneFence,
+			AwarenessFence.Or(
+				walkingFence,
+				DetectedActivityFence.During(DetectedActivityFence.ActivityType.Running),
+				DetectedActivityFence.During(DetectedActivityFence.ActivityType.OnBicycle)));
+		
+		// Now that we have an interesting, complex condition, register the fence to receive
+		// callbacks.
+		
+		FenceClient.UpdateFences(new FenceUpdateRequest.Builder()
+			.AddFence(FenceKey, exercisingWithHeadphonesFence)
+			.Build(), OnUpdateFencesSuccess, OnUpdateFencesFailure);
+	}
+
+	void OnUpdateFencesFailure(string obj)
+	{
+		throw new NotImplementedException();
+	}
+
+	void OnUpdateFencesSuccess()
+	{
+		throw new NotImplementedException();
 	}
 
 	#endregion

@@ -8,14 +8,14 @@ namespace NinevaStudios.AwarenessApi
 	[PublicAPI]
 	public class DetectedActivity
 	{
-		public DetectedActivity(int confidence, Type activityType)
+		public DetectedActivity(int confidence, ActivityType activityActivityType)
 		{
 			Confidence = confidence;
-			ActivityType = activityType;
+			ActivityActivityType = activityActivityType;
 		}
 
 		[PublicAPI]
-		public enum Type
+		public enum ActivityType
 		{
 			/// <summary>
 			/// The device is in a vehicle, such as a car.
@@ -72,11 +72,11 @@ namespace NinevaStudios.AwarenessApi
 		/// <summary>
 		/// Returns the type of activity that was detected.
 		/// </summary>
-		public Type ActivityType { get; private set; }
+		public ActivityType ActivityActivityType { get; private set; }
 
 		public override string ToString()
 		{
-			return string.Format("Confidence: {0}, ActivityType: {1}", Confidence, ActivityType);
+			return string.Format("Confidence: {0}, ActivityType: {1}", Confidence, ActivityActivityType);
 		}
 	}
 }

@@ -29,13 +29,13 @@ namespace NinevaStudios.AwarenessApi
 		public static ActivityRecognitionResult FromAJO(AndroidJavaObject ajo)
 		{
 			var probableActivities = ajo.CallAJO("getProbableActivities").FromJavaList(
-				x => new DetectedActivity(x.CallInt("getConfidence"), (DetectedActivity.Type) x.CallInt("getType")));
+				x => new DetectedActivity(x.CallInt("getConfidence"), (DetectedActivity.ActivityType) x.CallInt("getType")));
 			return new ActivityRecognitionResult(ajo.CallLong("getTime"), ajo.CallLong("getElapsedRealtimeMillis"), probableActivities);
 		}
 
-		public int GetActivityConfidence(DetectedActivity.Type activityType)
+		public int GetActivityConfidence(DetectedActivity.ActivityType activityActivityType)
 		{
-			return ProbableActivities.Where(x => x.ActivityType == activityType).Select(x => x.Confidence).FirstOrDefault();
+			return ProbableActivities.Where(x => x.ActivityActivityType == activityActivityType).Select(x => x.Confidence).FirstOrDefault();
 		}
 
 		public override string ToString()

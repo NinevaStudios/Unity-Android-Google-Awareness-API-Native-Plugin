@@ -32,7 +32,7 @@ namespace NinevaStudios.AwarenessApi
 			}
 		}
 
-		public void updateFences(FenceUpdateRequest fenceUpdateRequest, Action onSuccess, Action<string> onFailure)
+		public static void UpdateFences(FenceUpdateRequest fenceUpdateRequest, Action onSuccess, Action<string> onFailure)
 		{
 		}
 	}

@@ -8,6 +8,9 @@ using UnityEngine;
 
 namespace NinevaStudios.AwarenessApi
 {
+	// TODO permissions
+	
+	
 	/// <summary>
 	/// Main class to interact with snapshot API
 	///

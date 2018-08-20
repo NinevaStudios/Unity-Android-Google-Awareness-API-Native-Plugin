@@ -9,7 +9,9 @@ namespace GoogleAwarenessApi.Scripts.Internal
 	{
 		public static string CommaJoin<T>(this IEnumerable<T> items)
 		{
-			return string.Join(",", items.Select(x => x.ToString()).ToArray());
+			return String.Join(",", items.Select(x => x.ToString()).ToArray());
 		}
+
+		public const string AwarenessClass = "com.google.android.gms.awareness.Awareness";
 	}
 }

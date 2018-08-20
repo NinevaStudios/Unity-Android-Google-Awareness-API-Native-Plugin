@@ -14,18 +14,18 @@ namespace NinevaStudios.AwarenessApi
 	{
 		const string AwarenessFenceClass = "com.google.android.gms.awareness.fence.AwarenessFence";
 
-		readonly AndroidJavaObject _ajo;
+		public AndroidJavaObject AJO { get; private set; }
 
 		internal AwarenessFence(AndroidJavaObject ajo)
 		{
-			_ajo = ajo;
+			AJO = ajo;
 		}
 
 		public void Dispose()
 		{
-			if (_ajo != null)
+			if (AJO != null)
 			{
-				_ajo.Dispose();
+				AJO.Dispose();
 			}
 		}
 
@@ -36,7 +36,7 @@ namespace NinevaStudios.AwarenessApi
 		/// <returns>Collection of fences that should be combined with AND.</returns>
 		public static AwarenessFence And(params AwarenessFence[] fences)
 		{
-			var androidJavaObject = fences.ToList().ToJavaList(x => x._ajo);
+			var androidJavaObject = fences.ToList().ToJavaList(x => x.AJO);
 			return new AwarenessFence(AwarenessFenceClass.AJCCallStaticOnceAJO("and", androidJavaObject));
 		}
 

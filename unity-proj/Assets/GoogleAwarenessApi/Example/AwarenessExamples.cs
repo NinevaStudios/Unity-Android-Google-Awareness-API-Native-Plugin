@@ -64,7 +64,8 @@ public class AwarenessExamples : MonoBehaviour
 
 	#region fences_api
 
-	void SetupFences()
+	[UsedImplicitly]
+	public void OnSetupFences()
 	{
 		// DetectedActivityFence will fire when it detects the user performing the specified
 		// activity.  In this case it's walking.
@@ -100,14 +101,14 @@ public class AwarenessExamples : MonoBehaviour
 			.Build(), OnUpdateFencesSuccess, OnUpdateFencesFailure);
 	}
 
-	void OnUpdateFencesFailure(string obj)
+	void OnUpdateFencesFailure(string err)
 	{
-		throw new NotImplementedException();
+		LogFailure(err);
 	}
 
 	void OnUpdateFencesSuccess()
 	{
-		throw new NotImplementedException();
+		LogSuccess("Fences suggessfully updated");
 	}
 
 	#endregion

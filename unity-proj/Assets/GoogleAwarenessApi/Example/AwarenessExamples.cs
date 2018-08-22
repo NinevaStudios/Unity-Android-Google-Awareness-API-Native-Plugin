@@ -9,7 +9,8 @@ public class AwarenessExamples : MonoBehaviour
 	[SerializeField]
 	Text text;
 	
-	const string FenceKey = "fence_key";
+	const string ExecrcisingWithHeadphonesKey = "fence_key";
+	const string AllHeadphonesKey = "headphones_fence_key";
 	
 	#region snaphsot_API
 	
@@ -97,7 +98,15 @@ public class AwarenessExamples : MonoBehaviour
 		// callbacks.
 		
 		FenceClient.UpdateFences(new FenceUpdateRequest.Builder()
-			.AddFence(FenceKey, exercisingWithHeadphonesFence)
+			.AddFence(ExecrcisingWithHeadphonesKey, exercisingWithHeadphonesFence)
+			.Build(), OnUpdateFencesSuccess, OnUpdateFencesFailure);
+	}
+	
+	[UsedImplicitly]
+	public void OnSetupHeadphonesFence() {
+		var fence = AwarenessFence.Or(HeadphoneFence.During(HeadphoneState.PluggedIn), HeadphoneFence.PluggingIn(), HeadphoneFence.Unplugging());
+		FenceClient.UpdateFences(new FenceUpdateRequest.Builder()
+			.AddFence(AllHeadphonesKey, fence)
 			.Build(), OnUpdateFencesSuccess, OnUpdateFencesFailure);
 	}
 

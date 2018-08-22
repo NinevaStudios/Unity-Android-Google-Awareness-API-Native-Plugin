@@ -14,7 +14,7 @@ namespace NinevaStudios.AwarenessApi
 		
 		public static AwarenessFence PluggingIn()
 		{
-			return new AwarenessFence(HeadphoneFenceClass.AJCCallStaticOnceAJO("plugging"));
+			return new AwarenessFence(HeadphoneFenceClass.AJCCallStaticOnceAJO("pluggingIn"));
 		}
 		
 		public static AwarenessFence Unplugging()

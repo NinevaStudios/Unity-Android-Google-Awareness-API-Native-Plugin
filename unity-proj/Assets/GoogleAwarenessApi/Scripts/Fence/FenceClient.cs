@@ -31,6 +31,17 @@ namespace NinevaStudios.AwarenessApi
 				.CallAJO("addOnSuccessListener", new OnSuccessListenerProxy<AndroidJavaObject>(wrapper, ajo => ajo))
 				.CallAJO("addOnFailureListener", new OnFailureListenerProxy(onFailure));
 		}
+
+		/// <summary>
+		/// Queries the state of a registered fence in the Awareness API.
+		/// </summary>
+		/// <param name="fenceQueryRequest">A request encapsulating the query criteria parameters.</param>
+		/// <param name="onSuccess">Success callback.</param>
+		/// <param name="onFailure">Failure callback.</param>
+		public static void QueryFences(FenceQueryRequest fenceQueryRequest, Action<FenceQueryResponse> onSuccess, Action<string> onFailure)
+		{
+			
+		}
 		
 		static bool CheckPreconditions()
 		{

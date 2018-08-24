@@ -67,6 +67,14 @@ public class AwarenessExamples : MonoBehaviour
 	#region fences_api
 
 	[UsedImplicitly]
+	public void OnQueryFences()
+	{
+		var requst1 = FenceQueryRequest.All();
+		var requst = FenceQueryRequest.ForFences(AllHeadphonesKey, AllLocationKey);
+		FenceClient.QueryFences(requst, x => {}, error => {});
+	}
+
+	[UsedImplicitly]
 	public void OnSetupFences()
 	{
 		// DetectedActivityFence will fire when it detects the user performing the specified

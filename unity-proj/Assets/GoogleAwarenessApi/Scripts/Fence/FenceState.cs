@@ -2,6 +2,9 @@
 
 namespace NinevaStudios.AwarenessApi
 {
+	/// <summary>
+	/// Represents the fence state
+	/// </summary>
 	[PublicAPI]
 	public enum FenceState
 	{

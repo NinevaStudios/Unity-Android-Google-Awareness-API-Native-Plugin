@@ -12,12 +12,12 @@ namespace NinevaStudios.AwarenessApi
 	public class FenceQueryRequest
 	{
 		const string FenceQueryRequestClass = "com.google.android.gms.awareness.fence.FenceQueryRequest";
-		
-		readonly AndroidJavaObject _ajo;
+
+		public AndroidJavaObject AJO { get; private set; }
 
 		FenceQueryRequest(AndroidJavaObject ajo)
 		{
-			_ajo = ajo;
+			AJO = ajo;
 		}
 		
 		/// <summary>

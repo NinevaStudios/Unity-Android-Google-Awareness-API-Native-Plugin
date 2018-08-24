@@ -40,7 +40,14 @@ namespace NinevaStudios.AwarenessApi
 		/// <param name="onFailure">Failure callback.</param>
 		public static void QueryFences(FenceQueryRequest fenceQueryRequest, Action<FenceQueryResponse> onSuccess, Action<string> onFailure)
 		{
+			if (CheckPreconditions())
+			{
+				return;
+			}
 			
+			_client.CallAJO("queryFences", fenceQueryRequest.AJO)
+				.CallAJO("addOnSuccessListener", new OnSuccessListenerProxy<FenceQueryResponse>(onSuccess, FenceQueryResponse.FromAJO))
+				.CallAJO("addOnFailureListener", new OnFailureListenerProxy(onFailure));
 		}
 		
 		static bool CheckPreconditions()

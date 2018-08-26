@@ -1,5 +1,6 @@
 ﻿using System;
 using JetBrains.Annotations;
+using UnityEngine;
 
 namespace NinevaStudios.AwarenessApi
 {
@@ -122,7 +123,7 @@ namespace NinevaStudios.AwarenessApi
 		/// </param>
 		/// <param name="stopOffsetMillis">
 		///     is the offset from the end of the semantic time period. It can be specified as a positive or negative offset value but should be between -24 to 24 hours inclusive
-		///     (expressed in millis) constraint: startOffsetMillis < stopOffsetMillis
+		///     (expressed in millis) constraint: <see cref="startOffsetMillis" /> < <see cref="stopOffsetMillis" />
 		/// </param>
 		/// <returns><see cref="AwarenessFence" /> that is TRUE when the current time falls within the interval specified based on the semantic time label and offsets.</returns>
 		public static AwarenessFence AroundTimeInstant(TimeInstant timeInstant, long startOffsetMillis, long stopOffsetMillis)
@@ -142,7 +143,9 @@ namespace NinevaStudios.AwarenessApi
 		///     milliseconds since the start of the day. Same range as <see cref="startTimeOfDayMillis" />. This time must be greater than or equal to
 		///     <see cref="startTimeOfDayMillis" />.
 		/// </param>
-		/// <returns></returns>
+		/// <returns>
+		///     <see cref="AwarenessFence" />
+		/// </returns>
 		public static AwarenessFence InDailyInterval(TimeZone timeZone, long startTimeOfDayMillis, long stopTimeOfDayMillis)
 		{
 			// TODO
@@ -150,22 +153,60 @@ namespace NinevaStudios.AwarenessApi
 			return new AwarenessFence(null);
 		}
 
+		/// <summary>
+		///     This fence is in the TRUE state when the current time is within the absolute times indicated by <see cref="startTimeMillis" /> and <see cref="stopTimeMillis" />.
+		/// </summary>
+		/// <param name="startTimeMillis">Milliseconds since epoch for the start of the interval. Must be greater than or equal to 0L.</param>
+		/// <param name="stopTimeMillis">Milliseconds since epoch for the end of the interval. Must be greater than or equal to <see cref="startTimeMillis" />.</param>
+		/// <returns>
+		///     <see cref="AwarenessFence" />
+		/// </returns>
 		public static AwarenessFence InInterval(long startTimeMillis, long stopTimeMillis)
 		{
-			// TODO
-			return new AwarenessFence(null);
+			return new AwarenessFence(TimeFenceClass.AJCCallStaticOnceAJO("inInterval", startTimeMillis, stopTimeMillis));
 		}
 
-		public static AwarenessFence InIntervalOfDay()
+		/// <summary>
+		///     This fence is in the TRUE state on <see cref="dayOfWeek" /> during the interval specified by <see cref="startTimeOfDayMillis" /> to <see cref="stopTimeOfDayMillis" /> in the given
+		///     <see cref="timeZone" />.
+		/// </summary>
+		/// <param name="dayOfWeek">The day of the week.</param>
+		/// <param name="timeZone">
+		///     The time zone to use. If set to null, current device time zone is used, and the fence re-adjusts to account for changes to the time zone (e.g. due to location change, or
+		///     user-triggered change to Date & time settings).
+		/// </param>
+		/// <param name="startTimeOfDayMillis">Milliseconds since the start of the day. 12:00 am is 0L. The maximum value is the number of milliseconds in a day, namely 24L * 60L * 60L * 1000L.</param>
+		/// <param name="stopTimeOfDayMillis">Milliseconds since the start of the day, This time must be greater than or equal to <see cref="startTimeOfDayMillis" />.</param>
+		/// <returns>
+		///     <see cref="AwarenessFence" />
+		/// </returns>
+		public static AwarenessFence InIntervalOfDay(DayOfWeek dayOfWeek, TimeZone timeZone, long startTimeOfDayMillis, long stopTimeOfDayMillis)
 		{
 			// TODO
 			return new AwarenessFence(null);
 		}
 
-		public static AwarenessFence InTimeInterval(int timeInterval)
+		/// <summary>
+		///     This fence is in the TRUE state if the day attributes for the present day/time is one of the attributes specified in the given dayAttributes
+		/// </summary>
+		/// <param name="timeInterval">is the desired attributes of the day for which this fence will trigger.</param>
+		/// <returns>
+		///     <see cref="AwarenessFence" /> that triggers when the day attributes of the present moment is the specified attribute.
+		/// </returns>
+		public static AwarenessFence InTimeInterval(TimeInterval timeInterval)
 		{
-			// TODO
-			return new AwarenessFence(null);
+			return new AwarenessFence(TimeFenceClass.AJCCallStaticOnceAJO("inTimeInterval", (int) timeInterval));
+		}
+
+		static AndroidJavaObject ConvertTimeZone(TimeZone timeZone)
+		{
+			if (timeZone == null)
+			{
+				return null;
+			}
+
+			// TODO convert
+			return null;
 		}
 	}
 }

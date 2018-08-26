@@ -1,4 +1,6 @@
-﻿namespace DeadMosquito.GoogleMapsView.Internal
+﻿using JetBrains.Annotations;
+
+namespace DeadMosquito.GoogleMapsView.Internal
 {
 	using System;
 	using System.Collections.Generic;
@@ -101,6 +103,13 @@
 					_queuedActions.RemoveAt(0);
 				}
 			}
+		}
+
+		[UsedImplicitly]
+		public void OnFenceTriggered(string fenceJson)
+		{
+			// TODO fences
+			Debug.Log(fenceJson);
 		}
 	}
 }

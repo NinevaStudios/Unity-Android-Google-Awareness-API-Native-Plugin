@@ -1,10 +1,9 @@
-﻿using System;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using NinevaStudios.AwarenessApi;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AwarenessExamples : MonoBehaviour
+public class FenceApiExamples : MonoBehaviour
 {
 	[SerializeField]
 	Text text;
@@ -13,69 +12,18 @@ public class AwarenessExamples : MonoBehaviour
 	const string AllHeadphonesKey = "headphones_fence_key";
 	const string AllLocationKey = "location_fence_key";
 
-	#region snaphsot_API
-
-	[UsedImplicitly]
-	public void OnGetDetectedActivity()
-	{
-		SnapshotClient.GetDetectedActivity(result =>
-		{
-			Debug.Log("Still confidence: " + result.GetActivityConfidence(DetectedActivity.ActivityType.Still));
-			Debug.Log("Running confidence: " + result.GetActivityConfidence(DetectedActivity.ActivityType.Running));
-			LogSuccess(result);
-		}, LogFailure);
-	}
-
-	[UsedImplicitly]
-	public void OnGetHeadphonesState()
-	{
-		SnapshotClient.GetHeadphoneState(state => LogSuccess(state), LogFailure);
-	}
-
-	[UsedImplicitly]
-	public void OnGetWeather()
-	{
-		SnapshotClient.GetWeather(LogSuccess, LogFailure);
-	}
-
-	[UsedImplicitly]
-	public void OnGetLocation()
-	{
-		SnapshotClient.GetLocation(location => LogSuccess(location), LogFailure);
-	}
-
-	[UsedImplicitly]
-	public void OnGetTimeIntervals()
-	{
-		SnapshotClient.GetTimeIntervals(LogSuccess, LogFailure);
-	}
-
-	[UsedImplicitly]
-	public void OnGetNearbyPlaces()
-	{
-		SnapshotClient.GetPlaces(places => places.ForEach(LogSuccess), LogFailure);
-	}
-
-	[UsedImplicitly]
-	public void OnGetBeaconState()
-	{
-		SnapshotClient.GetBeaconState(LogSuccess, LogFailure);
-	}
-
-	#endregion
-
 	#region fences_api
 
 	[UsedImplicitly]
 	public void OnQueryFences()
 	{
-		var requst1 = FenceQueryRequest.All();
+		var allFences = FenceQueryRequest.All();
 		var requst = FenceQueryRequest.ForFences(AllHeadphonesKey, AllLocationKey);
-		FenceClient.QueryFences(requst, x => {}, error => {});
+		FenceClient.QueryFences(requst, response => { }, error => { });
 	}
 
 	[UsedImplicitly]
-	public void OnSetupFences()
+	public void OnSetupComplexFence()
 	{
 		// DetectedActivityFence will fire when it detects the user performing the specified
 		// activity.  In this case it's walking.
@@ -90,7 +38,7 @@ public class AwarenessExamples : MonoBehaviour
 		// Combines multiple fences into a compound fence.  While the first two fences trigger
 		// individually, this fence will only trigger its callback when all of its member fences
 		// hit a true state.
-		var walkingWithHeadphones = AwarenessFence.And(walkingFence, headphoneFence);
+		var notWalkingWithHeadphones = AwarenessFence.And(AwarenessFence.Not(walkingFence), headphoneFence);
 
 		// We can even nest compound fences.  Using both "and" and "or" compound fences, this
 		// compound fence will determine when the user has headphones in and is engaging in at least
@@ -105,7 +53,6 @@ public class AwarenessExamples : MonoBehaviour
 
 		// Now that we have an interesting, complex condition, register the fence to receive
 		// callbacks.
-
 		FenceClient.UpdateFences(new FenceUpdateRequest.Builder()
 			.AddFence(ExecrcisingWithHeadphonesKey, exercisingWithHeadphonesFence)
 			.Build(), OnUpdateFencesSuccess, OnUpdateFencesFailure);
@@ -136,7 +83,13 @@ public class AwarenessExamples : MonoBehaviour
 	[UsedImplicitly]
 	public void OnSetupTimeFence()
 	{
-		
+		const long hourBefore = -1L * 60L * 60L * 1000L;
+		const long hourAfter = 1L * 60L * 60L * 1000L;
+
+		var aroundSunriseOrSunset = AwarenessFence.Or(
+			TimeFence.AroundTimeInstant(TimeFence.TimeInstant.Sunrise, hourBefore, hourAfter),
+			TimeFence.AroundTimeInstant(TimeFence.TimeInstant.Sunset, hourBefore, hourAfter)
+		);
 	}
 
 	void OnUpdateFencesFailure(string err)

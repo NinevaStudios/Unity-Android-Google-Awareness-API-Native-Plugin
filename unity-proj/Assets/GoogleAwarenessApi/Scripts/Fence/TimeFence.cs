@@ -148,9 +148,8 @@ namespace NinevaStudios.AwarenessApi
 		/// </returns>
 		public static AwarenessFence InDailyInterval(TimeZone timeZone, long startTimeOfDayMillis, long stopTimeOfDayMillis)
 		{
-			// TODO
-			// https://stackoverflow.com/questions/35794249/how-to-get-time-zone-as-a-string-in-c-sharp
-			return new AwarenessFence(null);
+			return new AwarenessFence(TimeFenceClass.AJCCallStaticOnceAJO("inDailyInterval", 
+				ConvertTimeZone(timeZone), startTimeOfDayMillis, stopTimeOfDayMillis));
 		}
 
 		/// <summary>
@@ -182,8 +181,8 @@ namespace NinevaStudios.AwarenessApi
 		/// </returns>
 		public static AwarenessFence InIntervalOfDay(DayOfWeek dayOfWeek, TimeZone timeZone, long startTimeOfDayMillis, long stopTimeOfDayMillis)
 		{
-			// TODO
-			return new AwarenessFence(null);
+			return new AwarenessFence(TimeFenceClass.AJCCallStaticOnceAJO("inIntervalOfDay", (int) dayOfWeek, ConvertTimeZone(timeZone),
+				startTimeOfDayMillis, startTimeOfDayMillis));
 		}
 
 		/// <summary>
@@ -205,8 +204,7 @@ namespace NinevaStudios.AwarenessApi
 				return null;
 			}
 
-			// TODO convert
-			return null;
+			return TimeZoneClass.AJCCallStaticOnceAJO("getTimeZone", timeZone.StandardName);
 		}
 	}
 }

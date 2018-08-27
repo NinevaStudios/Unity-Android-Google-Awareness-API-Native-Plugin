@@ -10,14 +10,18 @@ namespace NinevaStudios.AwarenessApi
 	[PublicAPI]
 	public class FenceQueryResponse
 	{
+		Dictionary<string, FenceState> _state = new Dictionary<string, FenceState>();
+
 		Dictionary<string, FenceState> FenceStateDictionary
 		{
-			get { return null; }
+			get { return _state; }
 		}
 
 		public static FenceQueryResponse FromAJO(AndroidJavaObject ajo)
 		{
-			throw new System.NotImplementedException();
+			var keysAjo = ajo.CallAJO("getFenceStateMap").CallAJO("getFenceKeys").FromJavaIterable<string>();
+			keysAjo.ForEach(Debug.Log);
+			return new FenceQueryResponse();
 		}
 	}
 }

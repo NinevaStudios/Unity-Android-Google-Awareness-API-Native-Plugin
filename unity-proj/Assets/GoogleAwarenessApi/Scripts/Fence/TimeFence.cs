@@ -134,19 +134,19 @@ namespace NinevaStudios.AwarenessApi
 		/// <summary>
 		///     This fence is in the TRUE state during the interval specified by <see cref="startTimeOfDayMillis" /> and <see cref="stopTimeOfDayMillis" /> in the given <see cref="timeZone" />.
 		/// </summary>
-		/// <param name="timeZone">
-		///     The time zone to use. If set to null, current device time zone is used, and the fence re-adjusts to account for changes to the time zone (e.g. due to location change, or
-		///     user-triggered change to Date & time settings).
-		/// </param>
 		/// <param name="startTimeOfDayMillis">Milliseconds since the start of the day. 12:00 am is 0L. The maximum value is the number of milliseconds in a day, namely 24L * 60L * 60L * 1000L.</param>
 		/// <param name="stopTimeOfDayMillis">
 		///     milliseconds since the start of the day. Same range as <see cref="startTimeOfDayMillis" />. This time must be greater than or equal to
 		///     <see cref="startTimeOfDayMillis" />.
 		/// </param>
+		/// <param name="timeZone">
+		///     The time zone to use. If set to null, current device time zone is used, and the fence re-adjusts to account for changes to the time zone (e.g. due to location change, or
+		///     user-triggered change to Date & time settings).
+		/// </param>
 		/// <returns>
 		///     <see cref="AwarenessFence" />
 		/// </returns>
-		public static AwarenessFence InDailyInterval(TimeZone timeZone, long startTimeOfDayMillis, long stopTimeOfDayMillis)
+		public static AwarenessFence InDailyInterval(long startTimeOfDayMillis, long stopTimeOfDayMillis, string timeZone = null)
 		{
 			return new AwarenessFence(TimeFenceClass.AJCCallStaticOnceAJO("inDailyInterval", 
 				ConvertTimeZone(timeZone), startTimeOfDayMillis, stopTimeOfDayMillis));
@@ -170,16 +170,16 @@ namespace NinevaStudios.AwarenessApi
 		///     <see cref="timeZone" />.
 		/// </summary>
 		/// <param name="dayOfWeek">The day of the week.</param>
+		/// <param name="startTimeOfDayMillis">Milliseconds since the start of the day. 12:00 am is 0L. The maximum value is the number of milliseconds in a day, namely 24L * 60L * 60L * 1000L.</param>
+		/// <param name="stopTimeOfDayMillis">Milliseconds since the start of the day, This time must be greater than or equal to <see cref="startTimeOfDayMillis" />.</param>
 		/// <param name="timeZone">
 		///     The time zone to use. If set to null, current device time zone is used, and the fence re-adjusts to account for changes to the time zone (e.g. due to location change, or
 		///     user-triggered change to Date & time settings).
 		/// </param>
-		/// <param name="startTimeOfDayMillis">Milliseconds since the start of the day. 12:00 am is 0L. The maximum value is the number of milliseconds in a day, namely 24L * 60L * 60L * 1000L.</param>
-		/// <param name="stopTimeOfDayMillis">Milliseconds since the start of the day, This time must be greater than or equal to <see cref="startTimeOfDayMillis" />.</param>
 		/// <returns>
 		///     <see cref="AwarenessFence" />
 		/// </returns>
-		public static AwarenessFence InIntervalOfDay(DayOfWeek dayOfWeek, TimeZone timeZone, long startTimeOfDayMillis, long stopTimeOfDayMillis)
+		public static AwarenessFence InIntervalOfDay(DayOfWeek dayOfWeek, long startTimeOfDayMillis, long stopTimeOfDayMillis, string timeZone = null)
 		{
 			return new AwarenessFence(TimeFenceClass.AJCCallStaticOnceAJO("inIntervalOfDay", (int) dayOfWeek, ConvertTimeZone(timeZone),
 				startTimeOfDayMillis, startTimeOfDayMillis));
@@ -197,14 +197,14 @@ namespace NinevaStudios.AwarenessApi
 			return new AwarenessFence(TimeFenceClass.AJCCallStaticOnceAJO("inTimeInterval", (int) timeInterval));
 		}
 
-		static AndroidJavaObject ConvertTimeZone(TimeZone timeZone)
+		static AndroidJavaObject ConvertTimeZone(string timeZoneId)
 		{
-			if (timeZone == null)
+			if (timeZoneId == null)
 			{
 				return null;
 			}
 
-			return TimeZoneClass.AJCCallStaticOnceAJO("getTimeZone", timeZone.StandardName);
+			return TimeZoneClass.AJCCallStaticOnceAJO("getTimeZone", timeZoneId);
 		}
 	}
 }

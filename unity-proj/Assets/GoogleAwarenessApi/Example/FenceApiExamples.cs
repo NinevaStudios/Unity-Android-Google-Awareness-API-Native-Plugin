@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using JetBrains.Annotations;
 using NinevaStudios.AwarenessApi;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,9 +9,26 @@ public class FenceApiExamples : MonoBehaviour
 	[SerializeField]
 	Text text;
 
-	const string ExecrcisingWithHeadphonesKey = "fence_key";
+	const string ExercisingWithHeadphonesKey = "fence_key";
+
 	const string AllHeadphonesKey = "headphones_fence_key";
+
 	const string AllLocationKey = "location_fence_key";
+
+	const string AroundSunriseOrSunsetKey = "around_sunrise_or_sunset";
+
+	const string WholeDayKey = "whole_day";
+
+	const long HourInMillis = 60L * 60L * 1000L;
+	const string NextHour = "next_hour";
+
+	static long CurrentTimeMillis
+	{
+		get
+		{
+			return DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+		}
+	}
 
 	#region fences_api
 
@@ -18,8 +36,8 @@ public class FenceApiExamples : MonoBehaviour
 	public void OnQueryFences()
 	{
 		var allFences = FenceQueryRequest.All();
-		var requst = FenceQueryRequest.ForFences(AllHeadphonesKey, AllLocationKey);
-		FenceClient.QueryFences(requst, response => { }, error => { });
+		var request = FenceQueryRequest.ForFences(AllHeadphonesKey, AllLocationKey);
+		FenceClient.QueryFences(request, response => { }, error => { });
 	}
 
 	[UsedImplicitly]
@@ -54,7 +72,7 @@ public class FenceApiExamples : MonoBehaviour
 		// Now that we have an interesting, complex condition, register the fence to receive
 		// callbacks.
 		FenceClient.UpdateFences(new FenceUpdateRequest.Builder()
-			.AddFence(ExecrcisingWithHeadphonesKey, exercisingWithHeadphonesFence)
+			.AddFence(ExercisingWithHeadphonesKey, exercisingWithHeadphonesFence)
 			.Build(), OnUpdateFencesSuccess, OnUpdateFencesFailure);
 	}
 
@@ -83,13 +101,44 @@ public class FenceApiExamples : MonoBehaviour
 	[UsedImplicitly]
 	public void OnSetupTimeFence()
 	{
-		const long hourBefore = -1L * 60L * 60L * 1000L;
-		const long hourAfter = 1L * 60L * 60L * 1000L;
+		var aroundSunriseOrSunset = AroundSunriseOrSunsetFence();
+		var wholeDay = WholeDay();
+		var nextHour = TimeFence.InInterval(CurrentTimeMillis, CurrentTimeMillis + HourInMillis);
 
+		FenceClient.UpdateFences(new FenceUpdateRequest.Builder()
+			.AddFence(AroundSunriseOrSunsetKey, aroundSunriseOrSunset)
+			.AddFence(WholeDayKey, wholeDay)
+			.AddFence(NextHour, nextHour)
+			.Build(), OnUpdateFencesSuccess, OnUpdateFencesFailure);
+	}
+
+	static AwarenessFence WholeDay()
+	{
+		const long startTimeOFDayMillis = 0;
+		const long endTimeOfDayMillis = 24L * HourInMillis;
+		var wholeDay = TimeFence.InDailyInterval(startTimeOFDayMillis, endTimeOfDayMillis, "America/Denver");
+		return wholeDay;
+	}
+
+	static AwarenessFence AroundSunriseOrSunsetFence()
+	{
 		var aroundSunriseOrSunset = AwarenessFence.Or(
-			TimeFence.AroundTimeInstant(TimeFence.TimeInstant.Sunrise, hourBefore, hourAfter),
-			TimeFence.AroundTimeInstant(TimeFence.TimeInstant.Sunset, hourBefore, hourAfter)
+			TimeFence.AroundTimeInstant(TimeFence.TimeInstant.Sunrise, -HourInMillis, HourInMillis),
+			TimeFence.AroundTimeInstant(TimeFence.TimeInstant.Sunset, -HourInMillis, HourInMillis)
 		);
+		return aroundSunriseOrSunset;
+	}
+
+	[UsedImplicitly]
+	public void OnRemoveAllFences()
+	{
+		FenceClient.UpdateFences(new FenceUpdateRequest.Builder()
+			.RemoveFence(ExercisingWithHeadphonesKey)
+			.RemoveFence(AllHeadphonesKey)
+			.RemoveFence(AllLocationKey)
+			.RemoveFence(AroundSunriseOrSunsetKey)
+			.RemoveFence(WholeDayKey)
+			.Build(), () => LogSuccess("Fences successfully removed"), OnUpdateFencesFailure);
 	}
 
 	void OnUpdateFencesFailure(string err)
@@ -99,7 +148,7 @@ public class FenceApiExamples : MonoBehaviour
 
 	void OnUpdateFencesSuccess()
 	{
-		LogSuccess("Fences suggessfully updated");
+		LogSuccess("Fences successfully updated");
 	}
 
 	#endregion

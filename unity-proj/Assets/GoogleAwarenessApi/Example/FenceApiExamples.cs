@@ -9,24 +9,24 @@ public class FenceApiExamples : MonoBehaviour
 	[SerializeField]
 	Text text;
 
-	const string ExercisingWithHeadphonesKey = "fence_key";
-
+	const string ExercisingWithHeadphonesKey = "exercising_with_headphones_key";
 	const string AllHeadphonesKey = "headphones_fence_key";
-
 	const string AllLocationKey = "location_fence_key";
-
 	const string AroundSunriseOrSunsetKey = "around_sunrise_or_sunset";
-
 	const string WholeDayKey = "whole_day";
+	const string NextHourKey = "next_hour";
+	const string NextHourMonday = "next_hour_monday";
 
 	const long HourInMillis = 60L * 60L * 1000L;
-	const string NextHour = "next_hour";
+	const string AnyTimeIntervalKey = "any_time_interval";
 
 	static long CurrentTimeMillis
 	{
 		get
 		{
-			return DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+			var Jan1970 = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+			var javaSpan = DateTime.UtcNow - Jan1970;
+			return (long) javaSpan.TotalMilliseconds;
 		}
 	}
 
@@ -37,7 +37,7 @@ public class FenceApiExamples : MonoBehaviour
 	{
 		var allFences = FenceQueryRequest.All();
 		var request = FenceQueryRequest.ForFences(AllHeadphonesKey, AllLocationKey);
-		FenceClient.QueryFences(request, response => { }, error => { });
+		FenceClient.QueryFences(allFences, response => { }, error => { });
 	}
 
 	[UsedImplicitly]
@@ -103,30 +103,48 @@ public class FenceApiExamples : MonoBehaviour
 	{
 		var aroundSunriseOrSunset = AroundSunriseOrSunsetFence();
 		var wholeDay = WholeDay();
-		var nextHour = TimeFence.InInterval(CurrentTimeMillis, CurrentTimeMillis + HourInMillis);
+		var currentTimeMillis = CurrentTimeMillis;
+		Debug.Log("xxx: " + currentTimeMillis);
+		var nextHour = TimeFence.InInterval(currentTimeMillis, currentTimeMillis + HourInMillis);
+		var nextHourMonday = TimeFence.InIntervalOfDay(TimeFence.DayOfWeek.Monday, 0L, 24L * HourInMillis);
+		var anyTimeInterval = AnyTimeInterval();
 
 		FenceClient.UpdateFences(new FenceUpdateRequest.Builder()
 			.AddFence(AroundSunriseOrSunsetKey, aroundSunriseOrSunset)
 			.AddFence(WholeDayKey, wholeDay)
-			.AddFence(NextHour, nextHour)
+			.AddFence(NextHourKey, nextHour)
+			.AddFence(AnyTimeIntervalKey, anyTimeInterval)
+			// throws FENCE_NOT_AVAILABLE for some reason
+			//	.AddFence(NextHourMonday, nextHourMonday) 
 			.Build(), OnUpdateFencesSuccess, OnUpdateFencesFailure);
+	}
+
+	static AwarenessFence AnyTimeInterval()
+	{
+		return AwarenessFence.Or(
+			TimeFence.InTimeInterval(TimeFence.TimeInterval.Weekday),
+			TimeFence.InTimeInterval(TimeFence.TimeInterval.Weekend),
+			TimeFence.InTimeInterval(TimeFence.TimeInterval.Holiday),
+			TimeFence.InTimeInterval(TimeFence.TimeInterval.Morning),
+			TimeFence.InTimeInterval(TimeFence.TimeInterval.Afternoon),
+			TimeFence.InTimeInterval(TimeFence.TimeInterval.Evening),
+			TimeFence.InTimeInterval(TimeFence.TimeInterval.Night)
+		);
 	}
 
 	static AwarenessFence WholeDay()
 	{
 		const long startTimeOFDayMillis = 0;
 		const long endTimeOfDayMillis = 24L * HourInMillis;
-		var wholeDay = TimeFence.InDailyInterval(startTimeOFDayMillis, endTimeOfDayMillis, "America/Denver");
-		return wholeDay;
+		return TimeFence.InDailyInterval(startTimeOFDayMillis, endTimeOfDayMillis, "America/Denver");
 	}
 
 	static AwarenessFence AroundSunriseOrSunsetFence()
 	{
-		var aroundSunriseOrSunset = AwarenessFence.Or(
+		return AwarenessFence.Or(
 			TimeFence.AroundTimeInstant(TimeFence.TimeInstant.Sunrise, -HourInMillis, HourInMillis),
 			TimeFence.AroundTimeInstant(TimeFence.TimeInstant.Sunset, -HourInMillis, HourInMillis)
 		);
-		return aroundSunriseOrSunset;
 	}
 
 	[UsedImplicitly]
@@ -138,6 +156,8 @@ public class FenceApiExamples : MonoBehaviour
 			.RemoveFence(AllLocationKey)
 			.RemoveFence(AroundSunriseOrSunsetKey)
 			.RemoveFence(WholeDayKey)
+			.RemoveFence(NextHourKey)
+			.RemoveFence(AnyTimeIntervalKey)
 			.Build(), () => LogSuccess("Fences successfully removed"), OnUpdateFencesFailure);
 	}
 

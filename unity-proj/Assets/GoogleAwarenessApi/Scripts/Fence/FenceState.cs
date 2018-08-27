@@ -1,26 +1,67 @@
 ﻿using JetBrains.Annotations;
+using UnityEngine;
 
 namespace NinevaStudios.AwarenessApi
 {
 	/// <summary>
-	/// Represents the fence state
+	///     Represents the fence state
 	/// </summary>
 	[PublicAPI]
-	public enum FenceState
+	public class FenceState
 	{
-		/// <summary>
-		/// Fence state is false.
-		/// </summary>
-		False = 1,
+		[PublicAPI]
+		public enum State
+		{
+			/// <summary>
+			///     Fence state is false.
+			/// </summary>
+			False = 1,
+
+			/// <summary>
+			///     Fence state is true.
+			/// </summary>
+			True = 2,
+
+			/// <summary>
+			///     Fence state is unknown, which can be due to no data received.
+			/// </summary>
+			Unknown = 0
+		}
 
 		/// <summary>
-		/// Fence state is true.
+		///     Returns the fence key that identifies this fence in <see cref="AwarenessFence" />.
 		/// </summary>
-		True = 2,
+		public string FenceKey { get; private set; }
 
 		/// <summary>
-		/// Fence state is unknown, which can be due to no data received.
+		///     Returns the last time the fence state was changed in milliseconds since epoch.
 		/// </summary>
-		Unknown = 3
+		public long LastFenceUpdateTimeMillis { get; private set; }
+
+		/// <summary>
+		///     Returns the current fence state.
+		/// </summary>
+		public State CurrentState { get; private set; }
+
+		/// <summary>
+		///     Returns the previous fence state.
+		/// </summary>
+		public State PreviousState { get; private set; }
+
+		public static FenceState FromAJO(AndroidJavaObject ajo)
+		{
+			return new FenceState
+			{
+				FenceKey = ajo.CallStr("getFenceKey"),
+				LastFenceUpdateTimeMillis = ajo.CallLong("getLastFenceUpdateTimeMillis"),
+				CurrentState = (State) ajo.CallInt("getCurrentState"),
+				PreviousState = (State) ajo.CallInt("getPreviousState")
+			};
+		}
+
+		public override string ToString()
+		{
+			return string.Format("FenceKey: {0}, LastFenceUpdateTimeMillis: {1}, CurrentState: {2}, PreviousState: {3}", FenceKey, LastFenceUpdateTimeMillis, CurrentState, PreviousState);
+		}
 	}
 }

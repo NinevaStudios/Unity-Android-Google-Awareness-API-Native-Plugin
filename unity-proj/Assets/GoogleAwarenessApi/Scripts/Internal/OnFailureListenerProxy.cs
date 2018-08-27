@@ -17,7 +17,7 @@ namespace NinevaStudios.AwarenessApi.Internal
 		[UsedImplicitly]
 		void onFailure(AndroidJavaObject exception)
 		{
-			AwarenessSceneHelper.Queue(() => _failure(exception.CallStr("getMessage")));
+			AwarenessSceneHelper.Queue(() => _failure(exception.JavaToString()));
 		}
 	}
 }

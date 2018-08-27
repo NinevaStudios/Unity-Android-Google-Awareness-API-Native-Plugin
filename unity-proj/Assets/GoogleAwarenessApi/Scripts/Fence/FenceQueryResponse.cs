@@ -19,9 +19,17 @@ namespace NinevaStudios.AwarenessApi
 
 		public static FenceQueryResponse FromAJO(AndroidJavaObject ajo)
 		{
-			var keysAjo = ajo.CallAJO("getFenceStateMap").CallAJO("getFenceKeys").FromJavaIterable<string>();
-			keysAjo.ForEach(Debug.Log);
-			return new FenceQueryResponse();
+			var fenceQueryResponse = new FenceQueryResponse();
+			var stateMapAjo = ajo.CallAJO("getFenceStateMap");
+			var keys = stateMapAjo.CallAJO("getFenceKeys").FromJavaIterable<string>();
+			keys.ForEach(key => fenceQueryResponse.FenceStateDictionary[key] = FenceState.FromAJO(stateMapAjo.CallAJO("getFenceState", key)));
+
+			foreach (var fenceState in fenceQueryResponse.FenceStateDictionary)
+			{
+				Debug.Log(fenceState.Key + " : " + fenceState.Value	);
+			}
+
+			return fenceQueryResponse;
 		}
 	}
 }

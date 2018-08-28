@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -8,6 +9,13 @@ namespace NinevaStudios.AwarenessApi
 	{
 		const string TypeFilterClass = "com.google.android.gms.awareness.state.BeaconState$TypeFilter";
 		
+		List<BeaconInfo> _beaconInfos = new List<BeaconInfo>();
+
+		public List<BeaconInfo> BeaconInfos
+		{
+			get { return _beaconInfos; }
+		}
+
 		/// <summary>
 		/// The type of beacon to match. Beacons can be specified by either:
 		/// 	- A String match on both the namespace and type associated with the beacon.
@@ -45,6 +53,50 @@ namespace NinevaStudios.AwarenessApi
 			{
 				return new TypeFilter(TypeFilterClass.AJCCallStaticOnceAJO("with", theNamespace, type, content));
 			}
+		}
+		
+		/// <summary>
+		/// Information from one beacon.
+		/// </summary>
+		[PublicAPI]
+		public class BeaconInfo
+		{
+			/// <summary>
+			/// Return the byte array content of the beacon attachment if it exists.
+			/// </summary>
+			public byte[] Content { get; }
+			
+			/// <summary>
+			/// Return the beacon namespace.
+			/// </summary>
+			public string Namespace { get; }
+			
+			/// <summary>
+			/// Return the beacon type.
+			/// </summary>
+			public string Type { get; }
+
+			public BeaconInfo(byte[] content, string ns, string type)
+			{
+				Content = content;
+				Namespace = ns;
+				Type = type;
+			}
+		}
+
+		public static BeaconState FromAJO(AndroidJavaObject ajo)
+		{
+			var result = new BeaconState();
+			var ajos = ajo.FromJavaList<AndroidJavaObject>();
+			foreach (var beaconInfoAjo in ajos)
+			{
+				var content = beaconInfoAjo.Call<byte[]>("getContent");
+				var nameSpace = beaconInfoAjo.CallStr("getNamespace");
+				var type = beaconInfoAjo.CallStr("getType");
+				result.BeaconInfos.Add(new BeaconInfo(content, nameSpace, type));
+			}
+
+			return result;
 		}
 	}
 }

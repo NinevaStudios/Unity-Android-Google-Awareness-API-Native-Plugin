@@ -24,14 +24,36 @@ namespace NinevaStudios.AwarenessApi
 
 		static AndroidJavaObject _client;
 
-		public static void GetBeaconState(Action<BeaconStateResponse> onSuccess, Action<string> onFailure)
+		/// <summary>
+		/// Gets the current information about nearby beacons. Note that beacon snapshots are only available on API level 18 or higher.
+		/// </summary>
+		/// <param name="beaconTypes"></param>
+		/// <param name="onSuccess"></param>
+		/// <param name="onFailure"></param>
+		/// <exception cref="ArgumentNullException"></exception>
+		public static void GetBeaconState([NotNull] List<BeaconState.TypeFilter> beaconTypes, Action<BeaconState> onSuccess, Action<string> onFailure)
 		{
+			if (beaconTypes == null)
+			{
+				throw new ArgumentNullException("beaconTypes");
+			}
+			
+			if (beaconTypes.Count == 0)
+			{
+				throw new ArgumentException("beaconTypes must not be empty");
+			}
+
 			if (JniToolkitUtils.IsNotAndroidRuntime)
 			{
 				return;
 			}
 			
 			CreateClientLazy();
+
+			var onSuccessListenerProxy = new OnSuccessListenerProxy<BeaconState>(onSuccess, ajo => BeaconState.FromAJO(ajo.CallAJO("getBeaconState")));
+			_client.CallAJO("getBeaconState", beaconTypes.ToJavaList(x => x.AJO))
+				.CallAJO("addOnSuccessListener", onSuccessListenerProxy)
+				.CallAJO("addOnFailureListener", new OnFailureListenerProxy(onFailure));
 		}
 
 		public static void GetDetectedActivity(Action<ActivityRecognitionResult> onSuccess, Action<string> onFailure)

@@ -1,11 +1,12 @@
-﻿using JetBrains.Annotations;
+﻿using System.Collections.Generic;
+using JetBrains.Annotations;
 using NinevaStudios.AwarenessApi;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace GoogleAwarenessApi.Example
 {
-	public class SnaphotApiExamples : MonoBehaviour
+	public class SnapshotApiExamples : MonoBehaviour
 	{
 		[SerializeField]
 		Text text;
@@ -54,7 +55,8 @@ namespace GoogleAwarenessApi.Example
 		[UsedImplicitly]
 		public void OnGetBeaconState()
 		{
-			SnapshotClient.GetBeaconState(LogSuccess, LogFailure);
+			var beaconTypes = new List<BeaconState.TypeFilter> {BeaconState.TypeFilter.With("9e1bd22452a291704b3b", "type")};
+			SnapshotClient.GetBeaconState(beaconTypes, LogSuccess, LogFailure);
 		}
 
 		void LogFailure(string err)

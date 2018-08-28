@@ -23,12 +23,6 @@ namespace NinevaStudios.AwarenessApi
 			var stateMapAjo = ajo.CallAJO("getFenceStateMap");
 			var keys = stateMapAjo.CallAJO("getFenceKeys").FromJavaIterable<string>();
 			keys.ForEach(key => fenceQueryResponse.FenceStateDictionary[key] = FenceState.FromAJO(stateMapAjo.CallAJO("getFenceState", key)));
-
-			foreach (var fenceState in fenceQueryResponse.FenceStateDictionary)
-			{
-				Debug.Log(fenceState.Key + " : " + fenceState.Value	);
-			}
-
 			return fenceQueryResponse;
 		}
 	}

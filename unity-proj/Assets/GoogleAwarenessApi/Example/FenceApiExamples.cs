@@ -37,7 +37,7 @@ public class FenceApiExamples : MonoBehaviour
 	{
 		var allFences = FenceQueryRequest.All();
 		var request = FenceQueryRequest.ForFences(AllHeadphonesKey, AllLocationKey);
-		FenceClient.QueryFences(allFences, response => { }, error => { });
+		FenceClient.QueryFences(allFences, response => { }, LogFailure);
 	}
 
 	[UsedImplicitly]
@@ -104,7 +104,6 @@ public class FenceApiExamples : MonoBehaviour
 		var aroundSunriseOrSunset = AroundSunriseOrSunsetFence();
 		var wholeDay = WholeDay();
 		var currentTimeMillis = CurrentTimeMillis;
-		Debug.Log("xxx: " + currentTimeMillis);
 		var nextHour = TimeFence.InInterval(currentTimeMillis, currentTimeMillis + HourInMillis);
 		var nextHourMonday = TimeFence.InIntervalOfDay(TimeFence.DayOfWeek.Monday, 0L, 24L * HourInMillis);
 		var anyTimeInterval = AnyTimeInterval();

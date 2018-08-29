@@ -67,8 +67,15 @@ namespace GoogleAwarenessApi.Example
 
 		void LogSuccess(object result)
 		{
-			text.text = result.ToString();
-			Debug.Log(result);
+			if (result != null)
+			{
+				text.text = result.ToString();
+				Debug.Log(result);
+			}
+			else
+			{
+				Debug.LogWarning("Result is null");
+			}
 		}
 	}
 }

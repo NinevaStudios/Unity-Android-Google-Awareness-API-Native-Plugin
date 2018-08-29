@@ -11,6 +11,10 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.android.gms.awareness.fence.FenceState;
+import com.unity3d.player.UnityPlayer;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 @Keep
 public class AwarenessManager {
@@ -45,7 +49,19 @@ public class AwarenessManager {
             }
 
             FenceState fenceState = FenceState.extract(intent);
+            JSONObject json = new JSONObject();
+            try {
+                json.put("currentState", fenceState.getCurrentState());
+                json.put("previousState", fenceState.getPreviousState());
+                json.put("current", fenceState.getFenceKey());
+                json.put("lastUpdateTime", fenceState.getLastFenceUpdateTimeMillis());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
             Log.d(TAG, fenceState.toString());
+
+            UnityPlayer.UnitySendMessage("AwarenessSceneHelper", "OnFenceTriggered", json.toString());
         }
     }
 }

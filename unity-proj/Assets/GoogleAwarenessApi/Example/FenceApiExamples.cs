@@ -32,12 +32,23 @@ public class FenceApiExamples : MonoBehaviour
 
 	#region fences_api
 
+	/// <summary>
+	/// Query for which fences are enabled
+	/// </summary>
 	[UsedImplicitly]
 	public void OnQueryFences()
 	{
 		var allFences = FenceQueryRequest.All();
 		var request = FenceQueryRequest.ForFences(AllHeadphonesKey, AllLocationKey);
-		FenceClient.QueryFences(allFences, response => { }, LogFailure);
+		FenceClient.QueryFences(allFences, response =>
+		{
+			// This callback will be executed with all fences that are currently active
+			foreach (var fenceState in response.FenceStateDictionary)
+			{
+				Debug.Log("Active fences");
+				Debug.Log(string.Format("{0} : {1}", fenceState.Key, fenceState.Value));
+			}
+		}, LogFailure);
 	}
 
 	[UsedImplicitly]

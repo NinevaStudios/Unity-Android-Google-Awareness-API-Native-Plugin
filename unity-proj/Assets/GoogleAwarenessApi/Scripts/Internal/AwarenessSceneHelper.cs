@@ -10,8 +10,8 @@ namespace DeadMosquito.GoogleMapsView.Internal
 	class AwarenessSceneHelper : MonoBehaviour
 	{
 		static AwarenessSceneHelper _instance;
-		static readonly object InitLock = new Object();
-		readonly object _queueLock = new Object();
+		static readonly object InitLock = new object();
+		readonly object _queueLock = new object();
 		readonly List<Action> _queuedActions = new List<Action>();
 		readonly List<Action> _executingActions = new List<Action>();
 
@@ -46,7 +46,7 @@ namespace DeadMosquito.GoogleMapsView.Internal
 					{
 						var singleton = new GameObject();
 						_instance = singleton.AddComponent<AwarenessSceneHelper>();
-						singleton.name = typeof(AwarenessSceneHelper).ToString();
+						singleton.name = typeof(AwarenessSceneHelper).Name;
 
 						DontDestroyOnLoad(singleton);
 
@@ -86,7 +86,7 @@ namespace DeadMosquito.GoogleMapsView.Internal
 
 			while (_executingActions.Count > 0)
 			{
-				Action action = _executingActions[0];
+				var action = _executingActions[0];
 				_executingActions.RemoveAt(0);
 				action();
 			}
@@ -98,7 +98,7 @@ namespace DeadMosquito.GoogleMapsView.Internal
 			{
 				while (_queuedActions.Count > 0)
 				{
-					Action action = _queuedActions[0];
+					var action = _queuedActions[0];
 					_executingActions.Add(action);
 					_queuedActions.RemoveAt(0);
 				}

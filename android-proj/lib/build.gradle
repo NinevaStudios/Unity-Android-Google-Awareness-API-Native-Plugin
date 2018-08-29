@@ -25,10 +25,11 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    dependencies {
+        compileOnly fileTree(dir: 'libs', include: ['*.jar'])
+    }
 
     implementation 'com.google.android.gms:play-services-awareness:15.0.1'
-
 }
 
 task copyAarToUnity << {

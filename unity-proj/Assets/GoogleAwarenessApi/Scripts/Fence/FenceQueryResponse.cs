@@ -12,7 +12,7 @@ namespace NinevaStudios.AwarenessApi
 	{
 		Dictionary<string, FenceState> _state = new Dictionary<string, FenceState>();
 
-		Dictionary<string, FenceState> FenceStateDictionary
+		public Dictionary<string, FenceState> FenceStateDictionary
 		{
 			get { return _state; }
 		}

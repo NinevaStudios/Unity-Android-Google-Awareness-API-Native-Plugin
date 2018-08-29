@@ -10,8 +10,8 @@ using UnityEngine;
 namespace NinevaStudios.AwarenessApi
 {
 	// TODO permissions
-	
-	
+
+
 	/// <summary>
 	/// Main class to interact with snapshot API
 	///
@@ -37,7 +37,7 @@ namespace NinevaStudios.AwarenessApi
 			{
 				throw new ArgumentNullException("beaconTypes");
 			}
-			
+
 			if (beaconTypes.Count == 0)
 			{
 				throw new ArgumentException("beaconTypes must not be empty");
@@ -47,7 +47,7 @@ namespace NinevaStudios.AwarenessApi
 			{
 				return;
 			}
-			
+
 			CreateClientLazy();
 
 			var onSuccessListenerProxy = new OnSuccessListenerProxy<BeaconState>(onSuccess, ajo => BeaconState.FromAJO(ajo.CallAJO("getBeaconState")));
@@ -62,10 +62,10 @@ namespace NinevaStudios.AwarenessApi
 			{
 				return;
 			}
-			
+
 			_client.CallAJO("getDetectedActivity")
-				.CallAJO("addOnSuccessListener", new OnSuccessListenerProxy<ActivityRecognitionResult>(onSuccess, 
-						ajo => ActivityRecognitionResult.FromAJO(ajo.CallAJO("getActivityRecognitionResult"))))
+				.CallAJO("addOnSuccessListener", new OnSuccessListenerProxy<ActivityRecognitionResult>(onSuccess,
+					ajo => ActivityRecognitionResult.FromAJO(ajo.CallAJO("getActivityRecognitionResult"))))
 				.CallAJO("addOnFailureListener", new OnFailureListenerProxy(onFailure));
 		}
 
@@ -92,7 +92,7 @@ namespace NinevaStudios.AwarenessApi
 			{
 				return;
 			}
-			
+
 			_client.CallAJO("getLocation")
 				.CallAJO("addOnSuccessListener", new OnSuccessListenerProxy<Location>(onSuccess, ajo => Location.FromAJO(ajo.CallAJO("getLocation"))))
 				.CallAJO("addOnFailureListener", new OnFailureListenerProxy(onFailure));
@@ -104,7 +104,7 @@ namespace NinevaStudios.AwarenessApi
 			{
 				return;
 			}
-			
+
 			_client.CallAJO("getPlaces")
 				.CallAJO("addOnSuccessListener", new OnSuccessListenerProxy<List<PlaceLikelihood>>(onSuccess,
 					ajo => ajo.CallAJO("getPlaceLikelihoods").FromJavaList(PlaceLikelihood.FromAJO)))
@@ -117,7 +117,7 @@ namespace NinevaStudios.AwarenessApi
 			{
 				return;
 			}
-			
+
 			_client.CallAJO("getTimeIntervals")
 				.CallAJO("addOnSuccessListener", new OnSuccessListenerProxy<TimeIntervals>(onSuccess, ajo =>
 				{
@@ -133,9 +133,13 @@ namespace NinevaStudios.AwarenessApi
 			{
 				return;
 			}
-			
+
 			_client.CallAJO("getWeather")
-				.CallAJO("addOnSuccessListener", new OnSuccessListenerProxy<Weather>(onSuccess, ajo => new Weather(ajo.CallAJO("getWeather"))))
+				.CallAJO("addOnSuccessListener", new OnSuccessListenerProxy<Weather>(onSuccess, ajo =>
+				{
+					var weatherAJO = ajo.CallAJO("getWeather");
+					return weatherAJO.IsJavaNull() ? null : new Weather(weatherAJO);
+				}))
 				.CallAJO("addOnFailureListener", new OnFailureListenerProxy(onFailure));
 		}
 

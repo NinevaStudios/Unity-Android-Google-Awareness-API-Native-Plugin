@@ -31,7 +31,7 @@ namespace GoogleAwarenessApi.Example
 				return;
 			}
 			
-			PermissionHelper.RequestLocationPermission();
+			PermissionHelper.RequestLocationPermission(LogSuccess);
 		}
 
 		[UsedImplicitly]

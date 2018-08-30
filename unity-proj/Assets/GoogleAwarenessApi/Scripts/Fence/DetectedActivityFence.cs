@@ -3,11 +3,10 @@ using JetBrains.Annotations;
 
 namespace NinevaStudios.AwarenessApi
 {
-	// TODO TRUE FALSE cref
 	/// <summary>
 	/// Use this class to create activity-based fences.
 	///
-	/// Note: Values that indicate a changing state are momentarily TRUE for about 5 seconds, then automatically revert to FALSE.
+	/// Note: Values that indicate a changing state are momentarily <see cref="FenceState.State.True"/> for about 5 seconds, then automatically revert to <see cref="FenceState.State.False"/>.
 	/// </summary>
 	[PublicAPI]
 	public class DetectedActivityFence
@@ -54,7 +53,7 @@ namespace NinevaStudios.AwarenessApi
 		}
 
 		/// <summary>
-		/// This fence is in the TRUE state when the user is currently engaged in one of the specified activityTypes, and FALSE otherwise.
+		/// This fence is in the <see cref="FenceState.State.True"/> state when the user is currently engaged in one of the specified activityTypes, and <see cref="FenceState.State.False"/> otherwise.
 		/// </summary>
 		/// <param name="activityTypes">Collection of activity types.</param>
 		/// <returns>Awareness fence.</returns>
@@ -64,7 +63,7 @@ namespace NinevaStudios.AwarenessApi
 		}
 
 		/// <summary>
-		/// This fence is momentarily (about 5 seconds) TRUE when the user begins to engage in one of the activityTypes and the previous activity was not one of the values in activityTypes.
+		/// This fence is momentarily (about 5 seconds) <see cref="FenceState.State.True"/> when the user begins to engage in one of the activityTypes and the previous activity was not one of the values in activityTypes.
 		/// </summary>
 		/// <param name="activityTypes">Collection of activity types.</param>
 		/// <returns>Awareness fence.</returns>
@@ -74,7 +73,7 @@ namespace NinevaStudios.AwarenessApi
 		}
 
 		/// <summary>
-		/// This fence is momentarily (about 5 seconds) TRUE when the user stops one of the activityTypes, and transitions to an activity that is not in activityTypes.
+		/// This fence is momentarily (about 5 seconds) <see cref="FenceState.State.True"/> when the user stops one of the activityTypes, and transitions to an activity that is not in activityTypes.
 		/// </summary>
 		/// <param name="activityTypes">Collection of activity types.</param>
 		/// <returns>Awareness fence.</returns>

@@ -112,8 +112,8 @@ namespace NinevaStudios.AwarenessApi
 		const string TimeZoneClass = "java.util.TimeZone";
 
 		/// <summary>
-		///     This is a time fence that is in the TRUE state during a time interval defined with respect to <see cref="TimeInstant.Sunrise" /> or <see cref="TimeInstant.Sunset" /> instants.
-		///     For example, if it is relative to <see cref="TimeInstant.Sunrise" />, and sunrise time is denoted by variable T, then this fence is in the TRUE state during the period [T + startOffsetMillis, T +
+		///     This is a time fence that is in the <see cref="FenceState.State.True"/> state during a time interval defined with respect to <see cref="TimeInstant.Sunrise" /> or <see cref="TimeInstant.Sunset" /> instants.
+		///     For example, if it is relative to <see cref="TimeInstant.Sunrise" />, and sunrise time is denoted by variable T, then this fence is in the <see cref="FenceState.State.True"/> state during the period [T + startOffsetMillis, T +
 		///     stopOffsetMillis].
 		/// </summary>
 		/// <param name="timeInstant">is the desired semantic time label around which fence triggers are defined to happen.</param>
@@ -125,14 +125,14 @@ namespace NinevaStudios.AwarenessApi
 		///     is the offset from the end of the semantic time period. It can be specified as a positive or negative offset value but should be between -24 to 24 hours inclusive
 		///     (expressed in millis) constraint: <see cref="startOffsetMillis" /> < <see cref="stopOffsetMillis" />
 		/// </param>
-		/// <returns><see cref="AwarenessFence" /> that is TRUE when the current time falls within the interval specified based on the semantic time label and offsets.</returns>
+		/// <returns><see cref="AwarenessFence" /> that is <see cref="FenceState.State.True"/> when the current time falls within the interval specified based on the semantic time label and offsets.</returns>
 		public static AwarenessFence AroundTimeInstant(TimeInstant timeInstant, long startOffsetMillis, long stopOffsetMillis)
 		{
 			return new AwarenessFence(TimeFenceClass.AJCCallStaticOnceAJO("aroundTimeInstant", (int) timeInstant, startOffsetMillis, stopOffsetMillis));
 		}
 
 		/// <summary>
-		///     This fence is in the TRUE state during the interval specified by <see cref="startTimeOfDayMillis" /> and <see cref="stopTimeOfDayMillis" /> in the given <see cref="timeZone" />.
+		///     This fence is in the <see cref="FenceState.State.True"/> state during the interval specified by <see cref="startTimeOfDayMillis" /> and <see cref="stopTimeOfDayMillis" /> in the given <see cref="timeZone" />.
 		/// </summary>
 		/// <param name="startTimeOfDayMillis">Milliseconds since the start of the day. 12:00 am is 0L. The maximum value is the number of milliseconds in a day, namely 24L * 60L * 60L * 1000L.</param>
 		/// <param name="stopTimeOfDayMillis">
@@ -153,7 +153,7 @@ namespace NinevaStudios.AwarenessApi
 		}
 
 		/// <summary>
-		///     This fence is in the TRUE state when the current time is within the absolute times indicated by <see cref="startTimeMillis" /> and <see cref="stopTimeMillis" />.
+		///     This fence is in the <see cref="FenceState.State.True"/> state when the current time is within the absolute times indicated by <see cref="startTimeMillis" /> and <see cref="stopTimeMillis" />.
 		/// </summary>
 		/// <param name="startTimeMillis">Milliseconds since epoch for the start of the interval. Must be greater than or equal to 0L.</param>
 		/// <param name="stopTimeMillis">Milliseconds since epoch for the end of the interval. Must be greater than or equal to <see cref="startTimeMillis" />.</param>
@@ -166,7 +166,7 @@ namespace NinevaStudios.AwarenessApi
 		}
 
 		/// <summary>
-		///     This fence is in the TRUE state on <see cref="dayOfWeek" /> during the interval specified by <see cref="startTimeOfDayMillis" /> to <see cref="stopTimeOfDayMillis" /> in the given
+		///     This fence is in the <see cref="FenceState.State.True"/> state on <see cref="dayOfWeek" /> during the interval specified by <see cref="startTimeOfDayMillis" /> to <see cref="stopTimeOfDayMillis" /> in the given
 		///     <see cref="timeZone" />.
 		/// </summary>
 		/// <param name="dayOfWeek">The day of the week.</param>
@@ -186,7 +186,7 @@ namespace NinevaStudios.AwarenessApi
 		}
 
 		/// <summary>
-		///     This fence is in the TRUE state if the day attributes for the present day/time is one of the attributes specified in the given dayAttributes
+		///     This fence is in the <see cref="FenceState.State.True"/> state if the day attributes for the present day/time is one of the attributes specified in the given dayAttributes
 		/// </summary>
 		/// <param name="timeInterval">is the desired attributes of the day for which this fence will trigger.</param>
 		/// <returns>

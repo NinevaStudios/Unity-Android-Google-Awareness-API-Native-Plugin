@@ -1,4 +1,5 @@
 ﻿using JetBrains.Annotations;
+using NinevaStudios.AwarenessApi;
 
 namespace DeadMosquito.GoogleMapsView.Internal
 {
@@ -113,10 +114,9 @@ namespace DeadMosquito.GoogleMapsView.Internal
 		}
 
 		[UsedImplicitly]
-		public void OnRequestPermissionsResult(string permissions)
+		public void OnRequestPermissionsResult(string permissionsJson)
 		{
-			// TODO permissions
-			Debug.Log(permissions);
+			PermissionHelper.TriggerCallback(permissionsJson);
 		}
 	}
 }

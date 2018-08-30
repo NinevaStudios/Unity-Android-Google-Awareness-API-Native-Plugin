@@ -9,7 +9,7 @@ namespace NinevaStudios.AwarenessApi
 	///
 	/// The fences in this class support detecting nearby beacons that are associated with attachments, which are a triple of namespace, type, and content.
 	///
-	/// Note: Values that indicate a changing state are momentarily TRUE for about 5 seconds, then automatically revert to FALSE.
+	/// Note: Values that indicate a changing state are momentarily <see cref="FenceState.State.True"/> for about 5 seconds, then automatically revert to <see cref="FenceState.State.False"/>.
 	/// </summary>
 	[PublicAPI]
 	public class BeaconFence
@@ -17,7 +17,7 @@ namespace NinevaStudios.AwarenessApi
 		const string BeaconFenceClass = "com.google.android.gms.awareness.fence.BeaconFence";
 
 		/// <summary>
-		/// This fence is momentarily TRUE (about 5 seconds) when a beacon with the specified types is found.
+		/// This fence is momentarily <see cref="FenceState.State.True"/> (about 5 seconds) when a beacon with the specified types is found.
 		///
 		/// To use this API, your app must declare the android.permission.ACCESS_FINE_LOCATION permission in AndroidManifest.xml, and the user must provide consent at runtime.
 		/// </summary>
@@ -30,7 +30,7 @@ namespace NinevaStudios.AwarenessApi
 		}
 
 		/// <summary>
-		/// This fence is momentarily TRUE (about 5 seconds) when a beacon with the specified types is found.
+		/// This fence is momentarily <see cref="FenceState.State.True"/> (about 5 seconds) when a beacon with the specified types is found.
 		///
 		/// To use this API, your app must declare the android.permission.ACCESS_FINE_LOCATION permission in AndroidManifest.xml, and the user must provide consent at runtime.
 		/// </summary>
@@ -42,7 +42,7 @@ namespace NinevaStudios.AwarenessApi
 		}
 
 		/// <summary>
-		/// This fence is momentarily TRUE (about 5 seconds) when a beacon with the specified types is lost.
+		/// This fence is momentarily <see cref="FenceState.State.True"/> (about 5 seconds) when a beacon with the specified types is lost.
 		///
 		/// To use this API, your app must declare the android.permission.ACCESS_FINE_LOCATION permission in AndroidManifest.xml, and the user must provide consent at runtime.
 		/// </summary>
@@ -55,7 +55,7 @@ namespace NinevaStudios.AwarenessApi
 		}
 
 		/// <summary>
-		/// This fence is momentarily TRUE (about 5 seconds) when a beacon with the specified types is lost.
+		/// This fence is momentarily <see cref="FenceState.State.True"/> (about 5 seconds) when a beacon with the specified types is lost.
 		///
 		/// To use this API, your app must declare the android.permission.ACCESS_FINE_LOCATION permission in AndroidManifest.xml, and the user must provide consent at runtime.
 		/// </summary>
@@ -67,7 +67,7 @@ namespace NinevaStudios.AwarenessApi
 		}
 
 		/// <summary>
-		/// This fence is momentarily TRUE (about 5 seconds) when a beacon with the specified types is found but not lost.
+		/// This fence is momentarily <see cref="FenceState.State.True"/> (about 5 seconds) when a beacon with the specified types is found but not lost.
 		///
 		/// To use this API, your app must declare the android.permission.ACCESS_FINE_LOCATION permission in AndroidManifest.xml, and the user must provide consent at runtime.
 		/// </summary>
@@ -80,7 +80,7 @@ namespace NinevaStudios.AwarenessApi
 		}
 
 		/// <summary>
-		/// This fence is momentarily TRUE (about 5 seconds) when a beacon with the specified types is found but not lost.
+		/// This fence is momentarily <see cref="FenceState.State.True"/> (about 5 seconds) when a beacon with the specified types is found but not lost.
 		///
 		/// To use this API, your app must declare the android.permission.ACCESS_FINE_LOCATION permission in AndroidManifest.xml, and the user must provide consent at runtime.
 		/// </summary>

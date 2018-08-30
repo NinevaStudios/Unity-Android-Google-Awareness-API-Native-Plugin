@@ -11,7 +11,7 @@ namespace NinevaStudios.AwarenessApi
 		const string HeadphoneFenceClass = "com.google.android.gms.awareness.fence.HeadphoneFence";
 
 		/// <summary>
-		/// This fence is in the TRUE state when the headphones are in the specified state.
+		/// This fence is in the <see cref="FenceState.State.True"/> state when the headphones are in the specified state.
 		/// </summary>
 		/// <param name="headphoneState">Headphone state</param>
 		/// <returns></returns>
@@ -21,7 +21,7 @@ namespace NinevaStudios.AwarenessApi
 		}
 		
 		/// <summary>
-		/// This fence is momentarily (about 5 seconds) in the TRUE state when headphones are plugged in to the device.
+		/// This fence is momentarily (about 5 seconds) in the <see cref="FenceState.State.True"/> state when headphones are plugged in to the device.
 		/// </summary>
 		/// <returns><see cref="AwarenessFence"/></returns>
 		public static AwarenessFence PluggingIn()
@@ -30,7 +30,7 @@ namespace NinevaStudios.AwarenessApi
 		}
 		
 		/// <summary>
-		/// This fence is momentarily (about 5 seconds) in the TRUE state when headphones are unplugged from the device.
+		/// This fence is momentarily (about 5 seconds) in the <see cref="FenceState.State.True"/> state when headphones are unplugged from the device.
 		/// </summary>
 		/// <returns><see cref="AwarenessFence"/></returns>
 		public static AwarenessFence Unplugging()

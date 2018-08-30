@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 using NinevaStudios.AwarenessApi;
 using UnityEngine;
@@ -19,6 +20,7 @@ public class FenceApiExamples : MonoBehaviour
 
 	const long HourInMillis = 60L * 60L * 1000L;
 	const string AnyTimeIntervalKey = "any_time_interval";
+	const string AllBeaconFence = "all_beacon_fence";
 
 	static long CurrentTimeMillis
 	{
@@ -106,6 +108,20 @@ public class FenceApiExamples : MonoBehaviour
 		);
 		FenceClient.UpdateFences(new FenceUpdateRequest.Builder()
 			.AddFence(AllLocationKey, fence)
+			.Build(), OnUpdateFencesSuccess, OnUpdateFencesFailure);
+	}
+
+	[UsedImplicitly]
+	public void OnSetupBeaconFence()
+	{
+		var beaconTypes = new List<BeaconState.TypeFilter> {BeaconState.TypeFilter.With("ns", "type")};
+		var found = BeaconFence.Found(beaconTypes);
+		var near = BeaconFence.Near(beaconTypes);
+		var lost = BeaconFence.Lost(beaconTypes);
+		var beaconFence = AwarenessFence.Or(found, near, lost);
+		
+		FenceClient.UpdateFences(new FenceUpdateRequest.Builder()
+			.AddFence(AllBeaconFence, beaconFence)
 			.Build(), OnUpdateFencesSuccess, OnUpdateFencesFailure);
 	}
 

@@ -1,2 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.ninevastudios.awareness"/>
+          package="com.ninevastudios.awareness">
+
+    <application>
+        <activity
+            android:name=".PermissionHelperActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        
+    </application>
+
+</manifest>

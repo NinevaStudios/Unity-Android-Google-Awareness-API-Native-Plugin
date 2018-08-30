@@ -19,6 +19,7 @@ import org.json.JSONObject;
 @Keep
 public class AwarenessManager {
 
+    public static final String AWARENESS_SCENE_HELPER = "AwarenessSceneHelper";
     private static final String TAG = AwarenessManager.class.getSimpleName();
     private static final String FENCE_RECEIVER_ACTION = BuildConfig.APPLICATION_ID + "FENCE_RECEIVER_ACTION";
     private static PendingIntent pendingIntent;
@@ -61,7 +62,7 @@ public class AwarenessManager {
 
             Log.d(TAG, fenceState.toString());
 
-            UnityPlayer.UnitySendMessage("AwarenessSceneHelper", "OnFenceTriggered", json.toString());
+            UnityPlayer.UnitySendMessage(AWARENESS_SCENE_HELPER, "OnFenceTriggered", json.toString());
         }
     }
 }

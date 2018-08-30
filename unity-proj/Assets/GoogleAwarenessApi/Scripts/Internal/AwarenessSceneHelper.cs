@@ -111,5 +111,12 @@ namespace DeadMosquito.GoogleMapsView.Internal
 			// TODO fences
 			Debug.Log(fenceJson);
 		}
+
+		[UsedImplicitly]
+		public void OnRequestPermissionsResult(string permissions)
+		{
+			// TODO permissions
+			Debug.Log(permissions);
+		}
 	}
 }

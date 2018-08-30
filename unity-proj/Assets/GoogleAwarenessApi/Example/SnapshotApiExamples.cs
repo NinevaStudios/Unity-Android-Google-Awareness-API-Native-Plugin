@@ -23,6 +23,18 @@ namespace GoogleAwarenessApi.Example
 		}
 
 		[UsedImplicitly]
+		public void OnRequestLocationPermission()
+		{
+			if (PermissionHelper.LocationPermissionGranted)
+			{
+				Debug.Log("Location permission is already granted");
+				return;
+			}
+			
+			PermissionHelper.RequestLocationPermission();
+		}
+
+		[UsedImplicitly]
 		public void OnGetHeadphonesState()
 		{
 			SnapshotClient.GetHeadphoneState(state => LogSuccess(state), LogFailure);

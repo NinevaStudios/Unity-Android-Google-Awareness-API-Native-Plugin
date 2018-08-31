@@ -54,7 +54,7 @@ public class AwarenessManager {
             try {
                 json.put("currentState", fenceState.getCurrentState());
                 json.put("previousState", fenceState.getPreviousState());
-                json.put("current", fenceState.getFenceKey());
+                json.put("fenceKey", fenceState.getFenceKey());
                 json.put("lastUpdateTime", fenceState.getLastFenceUpdateTimeMillis());
             } catch (JSONException e) {
                 e.printStackTrace();

@@ -109,8 +109,8 @@ namespace DeadMosquito.GoogleMapsView.Internal
 		[UsedImplicitly]
 		public void OnFenceTriggered(string fenceJson)
 		{
-			// TODO fences
-			Debug.Log(fenceJson);
+			var fenceState = FenceState.FromJson(fenceJson);
+			FenceClient.RaiseFenceEvent(fenceState);
 		}
 
 		[UsedImplicitly]

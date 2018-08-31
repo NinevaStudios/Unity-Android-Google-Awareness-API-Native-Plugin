@@ -1,4 +1,6 @@
-﻿using JetBrains.Annotations;
+﻿using System.Collections.Generic;
+using JetBrains.Annotations;
+using NinevaStudios.AwarenessApi.Internal;
 using UnityEngine;
 
 namespace NinevaStudios.AwarenessApi
@@ -62,6 +64,18 @@ namespace NinevaStudios.AwarenessApi
 		public override string ToString()
 		{
 			return string.Format("FenceKey: {0}, LastFenceUpdateTimeMillis: {1}, CurrentState: {2}, PreviousState: {3}", FenceKey, LastFenceUpdateTimeMillis, CurrentState, PreviousState);
+		}
+
+		public static FenceState FromJson(string fenceJson)
+		{
+			var json = Json.Deserialize(fenceJson) as Dictionary<string, object>;
+			return new FenceState
+			{
+				FenceKey = json.GetStr("fenceKey"),
+				LastFenceUpdateTimeMillis = json.GetLong("lastUpdateTime"),
+				CurrentState = (State) json.GetInt("currentState"),
+				PreviousState = (State) json.GetInt("previousState")
+			};
 		}
 	}
 }

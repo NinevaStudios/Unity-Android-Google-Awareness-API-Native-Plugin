@@ -33,6 +33,11 @@ public class FenceApiExamples : MonoBehaviour
 		}
 	}
 
+	void Start()
+	{
+		FenceClient.OnFenceTriggered += LogSuccess;
+	}
+
 	#region fences_api
 
 	/// <summary>
@@ -41,18 +46,18 @@ public class FenceApiExamples : MonoBehaviour
 	[UsedImplicitly]
 	public void OnQueryFences()
 	{
-		var allFences = FenceQueryRequest.All();
 		var request = FenceQueryRequest.ForFences(AllHeadphonesKey, AllLocationKey);
-		FenceClient.QueryFences(allFences, response =>
+		
+		FenceClient.QueryFences(FenceQueryRequest.All(), response =>
 		{
 			// This callback will be executed with all fences that are currently active
+			var sb = new StringBuilder();
+			sb.Append("Active fences: ");
 			foreach (var fenceState in response.FenceStateDictionary)
 			{
-				var sb = new StringBuilder();
-				sb.Append("Active fences");
-				sb.AppendFormat("{0} : {1}", fenceState.Key, fenceState.Value);
-				LogSuccess(sb);
+				sb.AppendFormat("{0} : {1}\n", fenceState.Key, fenceState.Value);
 			}
+			LogSuccess(sb);
 		}, LogFailure);
 	}
 

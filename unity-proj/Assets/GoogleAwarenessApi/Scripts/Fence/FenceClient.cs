@@ -15,6 +15,8 @@ namespace NinevaStudios.AwarenessApi
 	[PublicAPI]
 	public class FenceClient
 	{
+		public static event Action<FenceState> OnFenceTriggered; 
+		
 		public const string AwarenessManagerClass = "com.ninevastudios.awareness.AwarenessManager";
 		
 		static AndroidJavaObject _client;
@@ -77,6 +79,14 @@ namespace NinevaStudios.AwarenessApi
 			_client = AwarenessUtils.AwarenessClass.AJCCallStaticOnceAJO("getFenceClient", JniToolkitUtils.Activity);
 			AwarenessManagerClass.AJCCallStaticOnce("register", JniToolkitUtils.Activity);
 			AwarenessSceneHelper.Init();
+		}
+
+		public static void RaiseFenceEvent(FenceState fenceState)
+		{
+			if (OnFenceTriggered != null)
+			{
+				OnFenceTriggered(fenceState);
+			}
 		}
 	}
 }

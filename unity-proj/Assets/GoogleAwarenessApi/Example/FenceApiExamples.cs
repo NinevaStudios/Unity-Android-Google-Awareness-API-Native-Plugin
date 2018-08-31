@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using JetBrains.Annotations;
 using NinevaStudios.AwarenessApi;
 using UnityEngine;
@@ -47,8 +48,10 @@ public class FenceApiExamples : MonoBehaviour
 			// This callback will be executed with all fences that are currently active
 			foreach (var fenceState in response.FenceStateDictionary)
 			{
-				Debug.Log("Active fences");
-				Debug.Log(string.Format("{0} : {1}", fenceState.Key, fenceState.Value));
+				var sb = new StringBuilder();
+				sb.Append("Active fences");
+				sb.AppendFormat("{0} : {1}", fenceState.Key, fenceState.Value);
+				LogSuccess(sb);
 			}
 		}, LogFailure);
 	}
@@ -114,7 +117,7 @@ public class FenceApiExamples : MonoBehaviour
 	[UsedImplicitly]
 	public void OnSetupBeaconFence()
 	{
-		var beaconTypes = new List<BeaconState.TypeFilter> {BeaconState.TypeFilter.With("ns", "type")};
+		var beaconTypes = new List<BeaconState.TypeFilter> {BeaconState.TypeFilter.With("ns", "string")};
 		var found = BeaconFence.Found(beaconTypes);
 		var near = BeaconFence.Near(beaconTypes);
 		var lost = BeaconFence.Lost(beaconTypes);

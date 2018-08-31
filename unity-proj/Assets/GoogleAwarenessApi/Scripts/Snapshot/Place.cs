@@ -484,26 +484,30 @@ namespace NinevaStudios.AwarenessApi
 			{
 				Id = ajo.CallStr("getId"),
 				Address = ajo.CallStr("getAddress"),
-				Attrubutions = ajo.CallStr("getAttributions"),
 				Name = ajo.CallStr("getName"),
 				PhoneNumber = ajo.CallStr("getPhoneNumber"),
 				PlaceTypes = ajo.CallAJO("getPlaceTypes").FromJavaList(x => (PlaceType) x.CallInt("intValue")),
 				PriceLevel = ajo.CallInt("getPriceLevel"),
 				Rating = ajo.CallFloat("getRating"),
-				Location = LatLng.FromAJO(ajo.CallAJO("getLatLng")),
+				Location = LatLng.FromAJO(ajo.CallAJO("getLatLng"))
+				// This for some reason causes crashes
+				// Attrubutions = ajo.CallStr("getAttributions")
 			};
 			if (!ajo.CallAJO("getLocale").IsJavaNull())
 			{
 				result.Locale = ajo.CallAJO("getLocale").JavaToString();
 			}
+
 			if (!ajo.CallAJO("getViewport").IsJavaNull())
 			{
 				result.Viewport = LatLngBounds.FromAJO(ajo.CallAJO("getViewport"));
 			}
+
 			if (!ajo.CallAJO("getWebsiteUri").IsJavaNull())
 			{
 				result.WebsiteUrl = ajo.CallAJO("getWebsiteUri").JavaToString();
 			}
+
 			return result;
 		}
 

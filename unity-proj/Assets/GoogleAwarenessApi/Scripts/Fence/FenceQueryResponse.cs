@@ -12,6 +12,9 @@ namespace NinevaStudios.AwarenessApi
 	{
 		Dictionary<string, FenceState> _state = new Dictionary<string, FenceState>();
 
+		/// <summary>
+		/// A dictionary of fence states keyed off of the fence keys resulting from a <see cref="FenceQueryRequest"/>.
+		/// </summary>
 		public Dictionary<string, FenceState> FenceStateDictionary
 		{
 			get { return _state; }

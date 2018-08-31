@@ -67,7 +67,7 @@ namespace GoogleAwarenessApi.Example
 		[UsedImplicitly]
 		public void OnGetBeaconState()
 		{
-			var beaconTypes = new List<BeaconState.TypeFilter> {BeaconState.TypeFilter.With("9e1bd22452a291704b3b", "type")};
+			var beaconTypes = new List<BeaconState.TypeFilter> {BeaconState.TypeFilter.With("9e1bd22452a291704b3b", "string")};
 			SnapshotClient.GetBeaconState(beaconTypes, LogSuccess, LogFailure);
 		}
 

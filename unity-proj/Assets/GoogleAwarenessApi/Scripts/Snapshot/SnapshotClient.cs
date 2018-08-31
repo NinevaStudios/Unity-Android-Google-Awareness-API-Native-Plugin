@@ -23,11 +23,13 @@ namespace NinevaStudios.AwarenessApi
 
 		/// <summary>
 		/// Gets the current information about nearby beacons. Note that beacon snapshots are only available on API level 18 or higher.
+		///
+		/// Gets the current information about nearby beacons. Note that beacon snapshots are only available on devices running API level 18 or higher.
+		/// If calling from a device running API level 17 or earlier, the Task will fail and calling getStatusCode() will return status code API_NOT_AVAILABLE.
 		/// </summary>
-		/// <param name="beaconTypes"></param>
-		/// <param name="onSuccess"></param>
-		/// <param name="onFailure"></param>
-		/// <exception cref="ArgumentNullException"></exception>
+		/// <param name="beaconTypes">The types of beacon attachments to return. See https://developers.google.com/beacons/ for details about beacon attachments.</param>
+		/// <param name="onSuccess">Success callback.</param>
+		/// <param name="onFailure">Failure callback.</param>
 		public static void GetBeaconState([NotNull] List<BeaconState.TypeFilter> beaconTypes, Action<BeaconState> onSuccess, Action<string> onFailure)
 		{
 			if (beaconTypes == null)
@@ -58,6 +60,13 @@ namespace NinevaStudios.AwarenessApi
 				.CallAJO("addOnFailureListener", new OnFailureListenerProxy(onFailure));
 		}
 
+		/// <summary>
+		/// Gets the user's current activity (e.g., running, walking, biking, driving, etc.).
+		///
+		/// To use this method, your app must declare the com.google.android.gms.permission.ACTIVITY_RECOGNITION permission in AndroidManifest.xml, and the user must provide consent at runtime.
+		/// </summary>
+		/// <param name="onSuccess">Success callback.</param>
+		/// <param name="onFailure">Failure callback.</param>
 		public static void GetDetectedActivity(Action<ActivityRecognitionResult> onSuccess, Action<string> onFailure)
 		{
 			if (CheckPreconditions())
@@ -88,6 +97,13 @@ namespace NinevaStudios.AwarenessApi
 				.CallAJO("addOnFailureListener", new OnFailureListenerProxy(onFailure));
 		}
 
+		/// <summary>
+		/// Gets the device's current location (lat/lng).
+		///
+		/// To use this method, your app must declare the android.permission.ACCESS_FINE_LOCATION permission in AndroidManifest.xml, and the user must provide consent at runtime.
+		/// </summary>
+		/// <param name="onSuccess">Success callback.</param>
+		/// <param name="onFailure">Failure callback.</param>
 		public static void GetLocation(Action<Location> onSuccess, Action<string> onFailure)
 		{
 			if (CheckPreconditions())
@@ -105,6 +121,13 @@ namespace NinevaStudios.AwarenessApi
 				.CallAJO("addOnFailureListener", new OnFailureListenerProxy(onFailure));
 		}
 
+		/// <summary>
+		/// Gets the device's current semantic location, or "place", which can include a name, place type, and address.
+		///
+		///To use this method, your app must declare the android.permission.ACCESS_FINE_LOCATION permission in AndroidManifest.xml, and the user must provide consent at runtime.
+		/// </summary>
+		/// <param name="onSuccess">Success callback.</param>
+		/// <param name="onFailure">Failure callback.</param>
 		public static void GetPlaces(Action<List<PlaceLikelihood>> onSuccess, Action<string> onFailure)
 		{
 			if (CheckPreconditions())
@@ -123,6 +146,13 @@ namespace NinevaStudios.AwarenessApi
 				.CallAJO("addOnFailureListener", new OnFailureListenerProxy(onFailure));
 		}
 
+		/// <summary>
+		/// Gets the semantic time intervals for the to the current time and location.
+		///
+		/// To use this method, your app must declare the android.permission.ACCESS_FINE_LOCATION permission in AndroidManifest.xml, and the user must provide consent at runtime.
+		/// </summary>
+		/// <param name="onSuccess">Success callback.</param>
+		/// <param name="onFailure">Failure callback.</param>
 		public static void GetTimeIntervals(Action<TimeIntervals> onSuccess, Action<string> onFailure)
 		{
 			if (CheckPreconditions())
@@ -139,13 +169,20 @@ namespace NinevaStudios.AwarenessApi
 				.CallAJO("addOnFailureListener", new OnFailureListenerProxy(onFailure));
 		}
 
+		/// <summary>
+		/// Gets the current weather conditions (temperature, feels-like temperature, dewpoint, humidity, etc.) at the current device location.
+		///
+		/// To use this method, your app must declare the android.permission.ACCESS_FINE_LOCATION permission in AndroidManifest.xml, and the user must provide consent at runtime.
+		/// </summary>
+		/// <param name="onSuccess"></param>
+		/// <param name="onFailure"></param>
 		public static void GetWeather(Action<Weather> onSuccess, Action<string> onFailure)
 		{
 			if (CheckPreconditions())
 			{
 				return;
 			}
-			
+
 			if (PermissionHelper.CheckLocationPermission())
 			{
 				return;

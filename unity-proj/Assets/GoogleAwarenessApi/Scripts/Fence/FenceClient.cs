@@ -19,6 +19,12 @@ namespace NinevaStudios.AwarenessApi
 		
 		static AndroidJavaObject _client;
 
+		/// <summary>
+		/// Adds or removes a set of fences that are registered with the Awareness API.
+		/// </summary>
+		/// <param name="fenceUpdateRequest">A request indicating a batch of fences to add and/or remove.</param>
+		/// <param name="onSuccess">Success callback.</param>
+		/// <param name="onFailure">Failure callback.</param>
 		public static void UpdateFences(FenceUpdateRequest fenceUpdateRequest, Action onSuccess, Action<string> onFailure)
 		{
 			if (CheckPreconditions())

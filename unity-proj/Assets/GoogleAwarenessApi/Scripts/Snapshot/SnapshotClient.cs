@@ -45,6 +45,11 @@ namespace NinevaStudios.AwarenessApi
 				return;
 			}
 
+			if (PermissionHelper.CheckLocationPermission())
+			{
+				return;
+			}
+
 			CreateClientLazy();
 
 			var onSuccessListenerProxy = new OnSuccessListenerProxy<BeaconState>(onSuccess, ajo => BeaconState.FromAJO(ajo.CallAJO("getBeaconState")));
@@ -90,6 +95,11 @@ namespace NinevaStudios.AwarenessApi
 				return;
 			}
 
+			if (PermissionHelper.CheckLocationPermission())
+			{
+				return;
+			}
+
 			_client.CallAJO("getLocation")
 				.CallAJO("addOnSuccessListener", new OnSuccessListenerProxy<Location>(onSuccess, ajo => Location.FromAJO(ajo.CallAJO("getLocation"))))
 				.CallAJO("addOnFailureListener", new OnFailureListenerProxy(onFailure));
@@ -98,6 +108,11 @@ namespace NinevaStudios.AwarenessApi
 		public static void GetPlaces(Action<List<PlaceLikelihood>> onSuccess, Action<string> onFailure)
 		{
 			if (CheckPreconditions())
+			{
+				return;
+			}
+
+			if (PermissionHelper.CheckLocationPermission())
 			{
 				return;
 			}
@@ -127,6 +142,11 @@ namespace NinevaStudios.AwarenessApi
 		public static void GetWeather(Action<Weather> onSuccess, Action<string> onFailure)
 		{
 			if (CheckPreconditions())
+			{
+				return;
+			}
+			
+			if (PermissionHelper.CheckLocationPermission())
 			{
 				return;
 			}

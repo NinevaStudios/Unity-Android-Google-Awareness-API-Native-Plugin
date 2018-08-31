@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using JetBrains.Annotations;
 
 namespace NinevaStudios.AwarenessApi
 {
@@ -23,6 +24,11 @@ namespace NinevaStudios.AwarenessApi
 		/// <returns>the <see cref="AwarenessFence"/> object representing this fence.</returns>
 		public static AwarenessFence Entering(double latitude, double longitude, double radius)
 		{
+			if (PermissionHelper.CheckLocationPermission())
+			{
+				throw new InvalidOperationException();
+			}
+			
 			return new AwarenessFence(LocationFenceClass.AJCCallStaticOnceAJO("entering", longitude, latitude, radius));
 		}
 
@@ -37,6 +43,11 @@ namespace NinevaStudios.AwarenessApi
 		/// <returns>the <see cref="AwarenessFence"/> object representing this fence.</returns>
 		public static AwarenessFence Exiting(double latitude, double longitude, double radius)
 		{
+			if (PermissionHelper.CheckLocationPermission())
+			{
+				throw new InvalidOperationException();
+			}
+			
 			return new AwarenessFence(LocationFenceClass.AJCCallStaticOnceAJO("exiting", longitude, latitude, radius));
 		}
 
@@ -52,6 +63,11 @@ namespace NinevaStudios.AwarenessApi
 		/// <returns>the <see cref="AwarenessFence"/> object representing this fence.</returns>
 		public static AwarenessFence In(double latitude, double longitude, double radius, long dwellTimeMillis)
 		{
+			if (PermissionHelper.CheckLocationPermission())
+			{
+				throw new InvalidOperationException();
+			}
+			
 			return new AwarenessFence(LocationFenceClass.AJCCallStaticOnceAJO("in", longitude, latitude, radius, dwellTimeMillis));
 		}
 	}

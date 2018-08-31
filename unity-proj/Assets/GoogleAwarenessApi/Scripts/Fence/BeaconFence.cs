@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 
@@ -25,6 +26,11 @@ namespace NinevaStudios.AwarenessApi
 		/// <returns><see cref="AwarenessFence"/></returns>
 		public static AwarenessFence Found(IEnumerable<BeaconState.TypeFilter> beaconTypes)
 		{
+			if (PermissionHelper.CheckLocationPermission())
+			{
+				throw new InvalidOperationException();
+			}
+			
 			var filters = beaconTypes.ToList().ToJavaList(x => x.AJO);
 			return new AwarenessFence(BeaconFenceClass.AJCCallStaticOnceAJO("found", filters));
 		}
@@ -50,6 +56,11 @@ namespace NinevaStudios.AwarenessApi
 		/// <returns><see cref="AwarenessFence"/></returns>
 		public static AwarenessFence Lost(IEnumerable<BeaconState.TypeFilter> beaconTypes)
 		{
+			if (PermissionHelper.CheckLocationPermission())
+			{
+				throw new InvalidOperationException();
+			}
+			
 			var filters = beaconTypes.ToList().ToJavaList(x => x.AJO);
 			return new AwarenessFence(BeaconFenceClass.AJCCallStaticOnceAJO("lost", filters));
 		}
@@ -75,6 +86,11 @@ namespace NinevaStudios.AwarenessApi
 		/// <returns><see cref="AwarenessFence"/></returns>
 		public static AwarenessFence Near(IEnumerable<BeaconState.TypeFilter> beaconTypes)
 		{
+			if (PermissionHelper.CheckLocationPermission())
+			{
+				throw new InvalidOperationException();
+			}
+			
 			var filters = beaconTypes.ToList().ToJavaList(x => x.AJO);
 			return new AwarenessFence(BeaconFenceClass.AJCCallStaticOnceAJO("near", filters));
 		}

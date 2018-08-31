@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using DeadMosquito.GoogleMapsView.Internal;
 using JetBrains.Annotations;
 using NinevaStudios.AwarenessApi.Internal;
+using UnityEngine;
 
 namespace NinevaStudios.AwarenessApi
 {
-	// TODO check in all methods!
+	/// <summary>
+	/// Class to help checking and requesting permissions
+	/// </summary>
 	[PublicAPI]
 	public class PermissionHelper
 	{
@@ -76,7 +79,7 @@ namespace NinevaStudios.AwarenessApi
 
 			public override string ToString()
 			{
-				return string.Format(
+				return String.Format(
 					"[PermissionRequestResult: Permission={0}, Status={1}, ShouldShowRequestPermissionRationale={2}]",
 					Permission, Status, ShouldShowRequestPermissionRationale);
 			}
@@ -125,6 +128,17 @@ namespace NinevaStudios.AwarenessApi
 			{
 				_callback(PermissionRequestResult.FromJson(Json.Deserialize(json) as Dictionary<string, object>));
 			}
+		}
+
+		public static bool CheckLocationPermission()
+		{
+			if (!PermissionHelper.LocationPermissionGranted)
+			{
+				Debug.LogError("android.permission.ACCESS_FINE_LOCATION is not granted");
+				return true;
+			}
+
+			return false;
 		}
 	}
 }

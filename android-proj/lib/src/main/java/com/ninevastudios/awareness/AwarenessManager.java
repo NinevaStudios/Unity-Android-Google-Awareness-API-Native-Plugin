@@ -60,8 +60,6 @@ public class AwarenessManager {
                 e.printStackTrace();
             }
 
-            Log.d(TAG, fenceState.toString());
-
             UnityPlayer.UnitySendMessage(AWARENESS_SCENE_HELPER, "OnFenceTriggered", json.toString());
         }
     }

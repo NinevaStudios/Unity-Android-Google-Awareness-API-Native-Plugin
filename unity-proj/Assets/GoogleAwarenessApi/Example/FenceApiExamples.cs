@@ -17,7 +17,6 @@ public class FenceApiExamples : MonoBehaviour
 	const string AroundSunriseOrSunsetKey = "around_sunrise_or_sunset";
 	const string WholeDayKey = "whole_day";
 	const string NextHourKey = "next_hour";
-	const string NextHourMonday = "next_hour_monday";
 
 	const long HourInMillis = 60L * 60L * 1000L;
 	const string AnyTimeIntervalKey = "any_time_interval";
@@ -47,7 +46,7 @@ public class FenceApiExamples : MonoBehaviour
 	public void OnQueryFences()
 	{
 		var request = FenceQueryRequest.ForFences(AllHeadphonesKey, AllLocationKey);
-		
+
 		FenceClient.QueryFences(FenceQueryRequest.All(), response =>
 		{
 			// This callback will be executed with all fences that are currently active
@@ -57,12 +56,31 @@ public class FenceApiExamples : MonoBehaviour
 			{
 				sb.AppendFormat("{0} : {1}\n", fenceState.Key, fenceState.Value);
 			}
+
 			LogSuccess(sb);
 		}, LogFailure);
 	}
 
 	[UsedImplicitly]
-	public void OnSetupComplexFence()
+	public void OnRegisterFences()
+	{
+		var currentTimeMillis = CurrentTimeMillis;
+
+		FenceClient.UpdateFences(new FenceUpdateRequest.Builder()
+			.AddFence(ExercisingWithHeadphonesKey, CreateExercisingWithHeadphonesFence())
+			.AddFence(AllHeadphonesKey, CreateHeadphonesFence())
+			.AddFence(AllLocationKey, CreateLocationFence())
+			.AddFence(AllBeaconFence, CreateBeaconFence())
+			.AddFence(AroundSunriseOrSunsetKey, CreateSunriseOrSunsetFence())
+			.AddFence(AnyTimeIntervalKey, CreateAnyTimeIntervalFence())
+			.AddFence(WholeDayKey, CreateWholeDayFence())
+			.AddFence(NextHourKey, TimeFence.InInterval(currentTimeMillis, currentTimeMillis + HourInMillis))
+			// throws FENCE_NOT_AVAILABLE for some reason
+//			.AddFence("next_hour_monday, TimeFence.InIntervalOfDay(TimeFence.DayOfWeek.Monday, 0L, 24L * HourInMillis))
+			.Build(), OnUpdateFencesSuccess, OnUpdateFencesFailure);
+	}
+
+	static AwarenessFence CreateExercisingWithHeadphonesFence()
 	{
 		// DetectedActivityFence will fire when it detects the user performing the specified
 		// activity.  In this case it's walking.
@@ -90,70 +108,34 @@ public class FenceApiExamples : MonoBehaviour
 				DetectedActivityFence.During(DetectedActivityFence.ActivityType.Running),
 				DetectedActivityFence.During(DetectedActivityFence.ActivityType.OnBicycle)));
 
-		// Now that we have an interesting, complex condition, register the fence to receive
-		// callbacks.
-		FenceClient.UpdateFences(new FenceUpdateRequest.Builder()
-			.AddFence(ExercisingWithHeadphonesKey, exercisingWithHeadphonesFence)
-			.Build(), OnUpdateFencesSuccess, OnUpdateFencesFailure);
+		return exercisingWithHeadphonesFence;
 	}
 
-	[UsedImplicitly]
-	public void OnSetupHeadphonesFence()
+	static AwarenessFence CreateHeadphonesFence()
 	{
-		var fence = AwarenessFence.Or(HeadphoneFence.During(HeadphoneState.PluggedIn), HeadphoneFence.PluggingIn(), HeadphoneFence.Unplugging());
-		FenceClient.UpdateFences(new FenceUpdateRequest.Builder()
-			.AddFence(AllHeadphonesKey, fence)
-			.Build(), OnUpdateFencesSuccess, OnUpdateFencesFailure);
+		// Will trigger when headphones are connected or disconnected
+		return AwarenessFence.Or(HeadphoneFence.During(HeadphoneState.PluggedIn), HeadphoneFence.PluggingIn(), HeadphoneFence.Unplugging());
 	}
 
-	[UsedImplicitly]
-	public void OnSetupLocationFence()
+	static AwarenessFence CreateLocationFence()
 	{
-		var fence = AwarenessFence.Or(
+		return AwarenessFence.Or(
 			LocationFence.Entering(0, 0, 1000),
 			LocationFence.Exiting(0, 0, 1000),
 			LocationFence.In(0, 0, 1000, 100)
 		);
-		FenceClient.UpdateFences(new FenceUpdateRequest.Builder()
-			.AddFence(AllLocationKey, fence)
-			.Build(), OnUpdateFencesSuccess, OnUpdateFencesFailure);
 	}
 
-	[UsedImplicitly]
-	public void OnSetupBeaconFence()
+	static AwarenessFence CreateBeaconFence()
 	{
 		var beaconTypes = new List<BeaconState.TypeFilter> {BeaconState.TypeFilter.With("ns", "string")};
 		var found = BeaconFence.Found(beaconTypes);
 		var near = BeaconFence.Near(beaconTypes);
 		var lost = BeaconFence.Lost(beaconTypes);
-		var beaconFence = AwarenessFence.Or(found, near, lost);
-		
-		FenceClient.UpdateFences(new FenceUpdateRequest.Builder()
-			.AddFence(AllBeaconFence, beaconFence)
-			.Build(), OnUpdateFencesSuccess, OnUpdateFencesFailure);
+		return AwarenessFence.Or(found, near, lost);
 	}
 
-	[UsedImplicitly]
-	public void OnSetupTimeFence()
-	{
-		var aroundSunriseOrSunset = AroundSunriseOrSunsetFence();
-		var wholeDay = WholeDay();
-		var currentTimeMillis = CurrentTimeMillis;
-		var nextHour = TimeFence.InInterval(currentTimeMillis, currentTimeMillis + HourInMillis);
-		var nextHourMonday = TimeFence.InIntervalOfDay(TimeFence.DayOfWeek.Monday, 0L, 24L * HourInMillis);
-		var anyTimeInterval = AnyTimeInterval();
-
-		FenceClient.UpdateFences(new FenceUpdateRequest.Builder()
-			.AddFence(AroundSunriseOrSunsetKey, aroundSunriseOrSunset)
-			.AddFence(WholeDayKey, wholeDay)
-			.AddFence(NextHourKey, nextHour)
-			.AddFence(AnyTimeIntervalKey, anyTimeInterval)
-			// throws FENCE_NOT_AVAILABLE for some reason
-			//	.AddFence(NextHourMonday, nextHourMonday) 
-			.Build(), OnUpdateFencesSuccess, OnUpdateFencesFailure);
-	}
-
-	static AwarenessFence AnyTimeInterval()
+	static AwarenessFence CreateAnyTimeIntervalFence()
 	{
 		return AwarenessFence.Or(
 			TimeFence.InTimeInterval(TimeFence.TimeInterval.Weekday),
@@ -166,14 +148,14 @@ public class FenceApiExamples : MonoBehaviour
 		);
 	}
 
-	static AwarenessFence WholeDay()
+	static AwarenessFence CreateWholeDayFence()
 	{
 		const long startTimeOFDayMillis = 0;
 		const long endTimeOfDayMillis = 24L * HourInMillis;
 		return TimeFence.InDailyInterval(startTimeOFDayMillis, endTimeOfDayMillis, "America/Denver");
 	}
 
-	static AwarenessFence AroundSunriseOrSunsetFence()
+	static AwarenessFence CreateSunriseOrSunsetFence()
 	{
 		return AwarenessFence.Or(
 			TimeFence.AroundTimeInstant(TimeFence.TimeInstant.Sunrise, -HourInMillis, HourInMillis),

@@ -33,6 +33,9 @@ task copyAarToUnity << {
         from "$buildDir/outputs/aar"
         include '*release.aar'
         into "../../unity-proj/Assets/Plugins/Android"
+        rename {
+            return 'awareness-nineva-lib.aar'
+        }
     }
 }
 

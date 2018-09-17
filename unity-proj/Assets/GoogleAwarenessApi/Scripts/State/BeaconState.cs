@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using GoogleAwarenessApi.Scripts.Internal;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -82,6 +84,11 @@ namespace NinevaStudios.AwarenessApi
 				Namespace = ns;
 				Type = type;
 			}
+
+			public override string ToString()
+			{
+				return string.Format("Content: {0}, Namespace: {1}, Type: {2}", Content, Namespace, Type);
+			}
 		}
 
 		public static BeaconState FromAJO(AndroidJavaObject ajo)
@@ -97,6 +104,11 @@ namespace NinevaStudios.AwarenessApi
 			}
 
 			return result;
+		}
+
+		public override string ToString()
+		{
+			return _beaconInfos.CommaJoin();
 		}
 	}
 }

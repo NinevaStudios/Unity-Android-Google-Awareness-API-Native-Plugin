@@ -128,7 +128,7 @@ public class FenceApiExamples : MonoBehaviour
 
 	static AwarenessFence CreateBeaconFence()
 	{
-		var beaconTypes = new List<BeaconState.TypeFilter> {BeaconState.TypeFilter.With("ns", "string")};
+		var beaconTypes = new List<BeaconState.TypeFilter> {BeaconState.TypeFilter.With("awareness-api-1534415879510", "string")};
 		var found = BeaconFence.Found(beaconTypes);
 		var near = BeaconFence.Near(beaconTypes);
 		var lost = BeaconFence.Lost(beaconTypes);

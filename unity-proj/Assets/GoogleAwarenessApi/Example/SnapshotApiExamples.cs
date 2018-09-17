@@ -67,8 +67,24 @@ namespace GoogleAwarenessApi.Example
 		[UsedImplicitly]
 		public void OnGetBeaconState()
 		{
-			var beaconTypes = new List<BeaconState.TypeFilter> {BeaconState.TypeFilter.With("9e1bd22452a291704b3b", "string")};
-			SnapshotClient.GetBeaconState(beaconTypes, LogSuccess, LogFailure);
+			var theNamespace = "awareness-api-1534415879510";
+			var beaconTypes = new List<BeaconState.TypeFilter>
+			{
+				BeaconState.TypeFilter.With(theNamespace, "string"), 
+				BeaconState.TypeFilter.With("com.google.nearby", "en"), 
+				BeaconState.TypeFilter.With(theNamespace, "x")
+			};
+			SnapshotClient.GetBeaconState(beaconTypes, state =>
+			{
+				if (state.BeaconInfos.Count == 0)
+				{
+					Debug.Log("No beacons found");
+				}
+				else
+				{
+					Debug.Log(state);
+				}
+			}, LogFailure);
 		}
 
 		void LogFailure(string err)

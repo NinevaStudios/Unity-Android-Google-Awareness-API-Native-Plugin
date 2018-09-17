@@ -26,7 +26,7 @@
                 android:value="AIzaSyBWmVtzRDjuqjwj9mzFtlGK2LRbF1v1G44"/>
         <meta-data
                 android:name="com.google.android.nearby.messages.API_KEY"
-                android:value="AIzaSyBWmVtzRDjuqjwj9mzFtlGK2LRbF1v1G44" />
+                android:value="AIzaSyAKYfIwUOmg1ebm4AvMJN1jomOhJ5Av7K8" />
     </application>
     
     <!-- Weather snapshots depend on this permission -->

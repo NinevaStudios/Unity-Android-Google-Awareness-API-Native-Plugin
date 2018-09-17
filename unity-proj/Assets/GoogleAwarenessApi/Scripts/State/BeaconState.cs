@@ -94,7 +94,14 @@ namespace NinevaStudios.AwarenessApi
 		public static BeaconState FromAJO(AndroidJavaObject ajo)
 		{
 			var result = new BeaconState();
-			var ajos = ajo.FromJavaList<AndroidJavaObject>();
+			
+			if (ajo.IsJavaNull())
+			{
+				return result;
+			}
+			
+			var beaconInfoList = ajo.CallAJO("getBeaconInfo");
+			var ajos = beaconInfoList.FromJavaList<AndroidJavaObject>();
 			foreach (var beaconInfoAjo in ajos)
 			{
 				var content = beaconInfoAjo.Call<byte[]>("getContent");

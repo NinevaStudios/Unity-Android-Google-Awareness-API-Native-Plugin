@@ -3,6 +3,9 @@ using JetBrains.Annotations;
 
 namespace NinevaStudios.AwarenessApi
 {
+	/// <summary>
+	/// Represents time intervals of the day
+	/// </summary>
 	[PublicAPI]
 	public class TimeIntervals
 	{

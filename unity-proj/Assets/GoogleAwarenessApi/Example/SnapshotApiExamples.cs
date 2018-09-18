@@ -67,9 +67,12 @@ namespace GoogleAwarenessApi.Example
 		[UsedImplicitly]
 		public void OnGetBeaconState()
 		{
+			// Configure your beacons first! https://developers.google.com/beacons/get-started#2-configure-your-beacons
+			
 			var theNamespace = "awareness-api-1534415879510";
 			var beaconTypes = new List<BeaconState.TypeFilter>
 			{
+				// must be registered on google dashboard https://developers.google.com/beacons/dashboard/
 				BeaconState.TypeFilter.With(theNamespace, "string"), 
 				BeaconState.TypeFilter.With("com.google.nearby", "en"), 
 				BeaconState.TypeFilter.With(theNamespace, "x")
@@ -78,11 +81,11 @@ namespace GoogleAwarenessApi.Example
 			{
 				if (state.BeaconInfos.Count == 0)
 				{
-					Debug.Log("No beacons found");
+					LogSuccess("No beacons found");
 				}
 				else
 				{
-					Debug.Log(state);
+					LogSuccess(state);
 				}
 			}, LogFailure);
 		}

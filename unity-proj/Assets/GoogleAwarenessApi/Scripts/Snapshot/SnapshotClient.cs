@@ -30,11 +30,16 @@ namespace NinevaStudios.AwarenessApi
 		/// <param name="beaconTypes">The types of beacon attachments to return. See https://developers.google.com/beacons/ for details about beacon attachments.</param>
 		/// <param name="onSuccess">Success callback.</param>
 		/// <param name="onFailure">Failure callback.</param>
-		public static void GetBeaconState([NotNull] List<BeaconState.TypeFilter> beaconTypes, Action<BeaconState> onSuccess, Action<string> onFailure)
+		public static void GetBeaconState([NotNull] List<BeaconState.TypeFilter> beaconTypes, [NotNull] Action<BeaconState> onSuccess, [CanBeNull] Action<string> onFailure)
 		{
 			if (beaconTypes == null)
 			{
 				throw new ArgumentNullException("beaconTypes");
+			}
+
+			if (onSuccess == null)
+			{
+				throw new ArgumentNullException("onSuccess");
 			}
 
 			if (beaconTypes.Count == 0)
@@ -42,7 +47,7 @@ namespace NinevaStudios.AwarenessApi
 				throw new ArgumentException("beaconTypes must not be empty");
 			}
 
-			if (JniToolkitUtils.IsNotAndroidRuntime)
+			if (CheckPreconditions())
 			{
 				return;
 			}
@@ -67,8 +72,13 @@ namespace NinevaStudios.AwarenessApi
 		/// </summary>
 		/// <param name="onSuccess">Success callback.</param>
 		/// <param name="onFailure">Failure callback.</param>
-		public static void GetDetectedActivity(Action<ActivityRecognitionResult> onSuccess, Action<string> onFailure)
+		public static void GetDetectedActivity([NotNull] Action<ActivityRecognitionResult> onSuccess, [CanBeNull] Action<string> onFailure)
 		{
+			if (onSuccess == null)
+			{
+				throw new ArgumentNullException("onSuccess");
+			}
+
 			if (CheckPreconditions())
 			{
 				return;
@@ -85,8 +95,13 @@ namespace NinevaStudios.AwarenessApi
 		/// </summary>
 		/// <param name="onSuccess">Invoked with result if success</param>
 		/// <param name="onFailure">Invoked with error message if failed</param>
-		public static void GetHeadphoneState(Action<HeadphoneState> onSuccess, Action<string> onFailure)
+		public static void GetHeadphoneState([NotNull] Action<HeadphoneState> onSuccess, [CanBeNull] Action<string> onFailure)
 		{
+			if (onSuccess == null)
+			{
+				throw new ArgumentNullException("onSuccess");
+			}
+
 			if (CheckPreconditions())
 			{
 				return;
@@ -104,8 +119,13 @@ namespace NinevaStudios.AwarenessApi
 		/// </summary>
 		/// <param name="onSuccess">Success callback.</param>
 		/// <param name="onFailure">Failure callback.</param>
-		public static void GetLocation(Action<Location> onSuccess, Action<string> onFailure)
+		public static void GetLocation([NotNull] Action<Location> onSuccess, [CanBeNull] Action<string> onFailure)
 		{
+			if (onSuccess == null)
+			{
+				throw new ArgumentNullException("onSuccess");
+			}
+
 			if (CheckPreconditions())
 			{
 				return;
@@ -128,8 +148,13 @@ namespace NinevaStudios.AwarenessApi
 		/// </summary>
 		/// <param name="onSuccess">Success callback.</param>
 		/// <param name="onFailure">Failure callback.</param>
-		public static void GetPlaces(Action<List<PlaceLikelihood>> onSuccess, Action<string> onFailure)
+		public static void GetPlaces([NotNull] Action<List<PlaceLikelihood>> onSuccess, [CanBeNull] Action<string> onFailure)
 		{
+			if (onSuccess == null)
+			{
+				throw new ArgumentNullException("onSuccess");
+			}
+
 			if (CheckPreconditions())
 			{
 				return;
@@ -153,8 +178,13 @@ namespace NinevaStudios.AwarenessApi
 		/// </summary>
 		/// <param name="onSuccess">Success callback.</param>
 		/// <param name="onFailure">Failure callback.</param>
-		public static void GetTimeIntervals(Action<TimeIntervals> onSuccess, Action<string> onFailure)
+		public static void GetTimeIntervals([NotNull] Action<TimeIntervals> onSuccess, [CanBeNull] Action<string> onFailure)
 		{
+			if (onSuccess == null)
+			{
+				throw new ArgumentNullException("onSuccess");
+			}
+
 			if (CheckPreconditions())
 			{
 				return;
@@ -176,8 +206,13 @@ namespace NinevaStudios.AwarenessApi
 		/// </summary>
 		/// <param name="onSuccess">Success callback.</param>
 		/// <param name="onFailure">Failure callback.</param>
-		public static void GetWeather(Action<Weather> onSuccess, Action<string> onFailure)
+		public static void GetWeather([NotNull] Action<Weather> onSuccess, [CanBeNull] Action<string> onFailure)
 		{
+			if (onSuccess == null)
+			{
+				throw new ArgumentNullException("onSuccess");
+			}
+
 			if (CheckPreconditions())
 			{
 				return;

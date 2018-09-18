@@ -132,9 +132,9 @@ namespace NinevaStudios.AwarenessApi
 
 		public static bool CheckLocationPermission()
 		{
-			if (!PermissionHelper.LocationPermissionGranted)
+			if (!LocationPermissionGranted)
 			{
-				Debug.LogError("android.permission.ACCESS_FINE_LOCATION is not granted");
+				Debug.LogError("android.permission.ACCESS_FINE_LOCATION is not granted, use RequestLocationPermission to request it!");
 				return true;
 			}
 

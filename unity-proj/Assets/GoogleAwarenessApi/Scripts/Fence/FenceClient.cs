@@ -27,8 +27,13 @@ namespace NinevaStudios.AwarenessApi
 		/// <param name="fenceUpdateRequest">A request indicating a batch of fences to add and/or remove.</param>
 		/// <param name="onSuccess">Success callback.</param>
 		/// <param name="onFailure">Failure callback.</param>
-		public static void UpdateFences(FenceUpdateRequest fenceUpdateRequest, Action onSuccess, Action<string> onFailure)
+		public static void UpdateFences([NotNull] FenceUpdateRequest fenceUpdateRequest, [CanBeNull] Action onSuccess, [CanBeNull] Action<string> onFailure)
 		{
+			if (fenceUpdateRequest == null)
+			{
+				throw new ArgumentNullException("fenceUpdateRequest");
+			}
+
 			if (CheckPreconditions())
 			{
 				return;
@@ -46,8 +51,18 @@ namespace NinevaStudios.AwarenessApi
 		/// <param name="fenceQueryRequest">A request encapsulating the query criteria parameters.</param>
 		/// <param name="onSuccess">Success callback.</param>
 		/// <param name="onFailure">Failure callback.</param>
-		public static void QueryFences(FenceQueryRequest fenceQueryRequest, Action<FenceQueryResponse> onSuccess, Action<string> onFailure)
+		public static void QueryFences([NotNull] FenceQueryRequest fenceQueryRequest, [NotNull] Action<FenceQueryResponse> onSuccess, [CanBeNull] Action<string> onFailure)
 		{
+			if (fenceQueryRequest == null)
+			{
+				throw new ArgumentNullException("fenceQueryRequest");
+			}
+
+			if (onSuccess == null)
+			{
+				throw new ArgumentNullException("onSuccess");
+			}
+
 			if (CheckPreconditions())
 			{
 				return;

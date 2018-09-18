@@ -10,7 +10,7 @@ namespace NinevaStudios.AwarenessApi
 	public class BeaconState
 	{
 		const string TypeFilterClass = "com.google.android.gms.awareness.state.BeaconState$TypeFilter";
-		
+
 		List<BeaconInfo> _beaconInfos = new List<BeaconInfo>();
 
 		public List<BeaconInfo> BeaconInfos
@@ -41,9 +41,9 @@ namespace NinevaStudios.AwarenessApi
 			/// <returns><see cref="BeaconState.TypeFilter"/></returns>
 			public static TypeFilter With(string theNamespace, string type)
 			{
-				return new TypeFilter(TypeFilterClass.AJCCallStaticOnceAJO("with", theNamespace, type));
+				return JniToolkitUtils.IsNotAndroidRuntime ? new TypeFilter(null) : new TypeFilter(TypeFilterClass.AJCCallStaticOnceAJO("with", theNamespace, type));
 			}
-			
+
 			/// <summary>
 			/// Creates a <see cref="BeaconState.TypeFilter"/> that matches against beacons with the given <see cref="theNamespace"/> and <see cref="type"/>, and <see cref="content"/>.
 			/// </summary>
@@ -53,10 +53,10 @@ namespace NinevaStudios.AwarenessApi
 			/// <returns><see cref="BeaconState.TypeFilter"/></returns>
 			public static TypeFilter With(string theNamespace, string type, byte[] content)
 			{
-				return new TypeFilter(TypeFilterClass.AJCCallStaticOnceAJO("with", theNamespace, type, content));
+				return JniToolkitUtils.IsNotAndroidRuntime ? new TypeFilter(null) : new TypeFilter(TypeFilterClass.AJCCallStaticOnceAJO("with", theNamespace, type, content));
 			}
 		}
-		
+
 		/// <summary>
 		/// Information from one beacon.
 		/// </summary>
@@ -67,12 +67,12 @@ namespace NinevaStudios.AwarenessApi
 			/// Return the byte array content of the beacon attachment if it exists.
 			/// </summary>
 			public byte[] Content { get; }
-			
+
 			/// <summary>
 			/// Return the beacon namespace.
 			/// </summary>
 			public string Namespace { get; }
-			
+
 			/// <summary>
 			/// Return the beacon type.
 			/// </summary>
@@ -94,12 +94,12 @@ namespace NinevaStudios.AwarenessApi
 		public static BeaconState FromAJO(AndroidJavaObject ajo)
 		{
 			var result = new BeaconState();
-			
+
 			if (ajo.IsJavaNull())
 			{
 				return result;
 			}
-			
+
 			var beaconInfoList = ajo.CallAJO("getBeaconInfo");
 			var ajos = beaconInfoList.FromJavaList<AndroidJavaObject>();
 			foreach (var beaconInfoAjo in ajos)

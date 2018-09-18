@@ -1,5 +1,4 @@
 ﻿
-#if UNITY_ANDROID
 namespace NinevaStudios.AwarenessApi.Internal
 {
 	using System.Collections.Generic;
@@ -52,4 +51,3 @@ namespace NinevaStudios.AwarenessApi.Internal
 		}
 	}
 }
-#endif

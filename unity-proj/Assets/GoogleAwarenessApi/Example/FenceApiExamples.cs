@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using JetBrains.Annotations;
 using NinevaStudios.AwarenessApi;
 using UnityEngine;
 using UnityEngine.UI;
 
+[SuppressMessage("ReSharper", "UnusedVariable")]
 public class FenceApiExamples : MonoBehaviour
 {
 	[SerializeField]

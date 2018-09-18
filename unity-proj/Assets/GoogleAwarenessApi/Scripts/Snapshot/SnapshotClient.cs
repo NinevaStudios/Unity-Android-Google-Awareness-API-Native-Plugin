@@ -174,8 +174,8 @@ namespace NinevaStudios.AwarenessApi
 		///
 		/// To use this method, your app must declare the android.permission.ACCESS_FINE_LOCATION permission in AndroidManifest.xml, and the user must provide consent at runtime.
 		/// </summary>
-		/// <param name="onSuccess"></param>
-		/// <param name="onFailure"></param>
+		/// <param name="onSuccess">Success callback.</param>
+		/// <param name="onFailure">Failure callback.</param>
 		public static void GetWeather(Action<Weather> onSuccess, Action<string> onFailure)
 		{
 			if (CheckPreconditions())

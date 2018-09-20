@@ -79,7 +79,7 @@ public class FenceApiExamples : MonoBehaviour
 			.AddFence(NextHourKey, TimeFence.InInterval(currentTimeMillis, currentTimeMillis + HourInMillis))
 			// throws FENCE_NOT_AVAILABLE for some reason
 //			.AddFence("next_hour_monday, TimeFence.InIntervalOfDay(TimeFence.DayOfWeek.Monday, 0L, 24L * HourInMillis))
-			.Build(), OnUpdateFencesSuccess, OnUpdateFencesFailure);
+			.Build(), () => { LogSuccess("Fences successfully updated"); }, LogFailure);
 	}
 
 	static AwarenessFence CreateExercisingWithHeadphonesFence()
@@ -176,17 +176,7 @@ public class FenceApiExamples : MonoBehaviour
 			.RemoveFence(WholeDayKey)
 			.RemoveFence(NextHourKey)
 			.RemoveFence(AnyTimeIntervalKey)
-			.Build(), () => LogSuccess("Fences successfully removed"), OnUpdateFencesFailure);
-	}
-
-	void OnUpdateFencesFailure(string err)
-	{
-		LogFailure(err);
-	}
-
-	void OnUpdateFencesSuccess()
-	{
-		LogSuccess("Fences successfully updated");
+			.Build(), () => LogSuccess("Fences successfully removed"), LogFailure);
 	}
 
 	#endregion

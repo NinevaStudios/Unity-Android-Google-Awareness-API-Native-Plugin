@@ -17,16 +17,23 @@
             </intent-filter>
             <meta-data android:name="unityplayer.UnityActivity" android:value="true"/>
         </activity>
+        
         <!-- Put your key in the value! -->
-        <meta-data 
-                android:name="com.google.android.geo.API_KEY" 
-                android:value="AIzaSyCKo5_MdP3liUmFSCWhq--SsbFvRg8VbJ8"/>
+
         <meta-data
                 android:name="com.google.android.awareness.API_KEY"
-                android:value="AIzaSyBWmVtzRDjuqjwj9mzFtlGK2LRbF1v1G44"/>
+                android:value="YOUR_API_KEY_HERE"/>
+        
+        <!--If you are getting place snapshots-->
+        <meta-data 
+                android:name="com.google.android.geo.API_KEY" 
+                android:value="YOUR_API_KEY_HERE"/>
+        
+        <!--If you are getting beacon snapshots or using beacon fences-->
         <meta-data
                 android:name="com.google.android.nearby.messages.API_KEY"
-                android:value="AIzaSyAKYfIwUOmg1ebm4AvMJN1jomOhJ5Av7K8" />
+                android:value="YOUR_API_KEY_HERE" />
+        
     </application>
     
     <!-- Weather snapshots depend on this permission -->

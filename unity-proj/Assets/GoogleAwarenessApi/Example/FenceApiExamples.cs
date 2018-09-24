@@ -47,7 +47,9 @@ public class FenceApiExamples : MonoBehaviour
 	[UsedImplicitly]
 	public void OnQueryFences()
 	{
+#pragma warning disable 0219
 		var request = FenceQueryRequest.ForFences(AllHeadphonesKey, AllLocationKey);
+#pragma warning restore 0219
 
 		FenceClient.QueryFences(FenceQueryRequest.All(), response =>
 		{
@@ -94,10 +96,12 @@ public class FenceApiExamples : MonoBehaviour
 		// the user got in trouble.
 		var headphoneFence = HeadphoneFence.During(HeadphoneState.PluggedIn);
 
+#pragma warning disable 0219
 		// Combines multiple fences into a compound fence.  While the first two fences trigger
 		// individually, this fence will only trigger its callback when all of its member fences
 		// hit a true state.
 		var notWalkingWithHeadphones = AwarenessFence.And(AwarenessFence.Not(walkingFence), headphoneFence);
+#pragma warning restore 0219
 
 		// We can even nest compound fences.  Using both "and" and "or" compound fences, this
 		// compound fence will determine when the user has headphones in and is engaging in at least

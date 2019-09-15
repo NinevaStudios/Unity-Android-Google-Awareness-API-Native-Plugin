@@ -1,12 +1,4 @@
-**Join our [Discord server](https://discord.gg/SuJP9fY) and ask us anything!**
-
-Documentation for [Google Awareness API](https://developers.google.com/awareness/) plugin for Unity. 
-
-[GO TO WIKI FOR DOCUMENTATION](https://github.com/NinevaStudios/unity-google-awareness-api-docs/wiki)
-
 The Awareness API unifies 7 location and context signals in a single API, enabling you to create powerful context-based features with minimal impact on system resources. Combine optimally processed context signals in new ways that were not previously possible, while letting the API manage system resources so your app doesn't have to.
-
-![](https://github.com/NinevaStudios/unity-google-awareness-api-docs/blob/master/image/awareness.png)
 
 # Plugin limitations
 

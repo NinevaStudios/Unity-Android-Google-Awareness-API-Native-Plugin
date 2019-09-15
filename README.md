@@ -62,7 +62,7 @@ If you are getting beacon snapshots or using beacon fences, declare the followin
 
 # Snapshot API
 
-![https://developers.google.com/awareness/android-api/snapshot-api-overview](https://github.com/NinevaStudios/unity-google-awareness-api-docs/blob/master/image/snapshot.png)
+https://developers.google.com/awareness/android-api/snapshot-api-overview
 
 You can use the Snapshot API to get information about the user's current environment. Using the Snapshot API, you can access a variety of context signals:
 
@@ -157,11 +157,7 @@ To use this API you first need to register your beacons with Google. To do so, p
 
 After you add the beacons with [Beacon Tools Android app](https://play.google.com/store/apps/details?id=com.google.android.apps.location.beacon.beacontools) you should be able to see your beacons and manage them on your [Beacon Dashboard](https://developers.google.com/beacons/dashboard)
 
-![](https://github.com/NinevaStudios/unity-google-awareness-api-docs/blob/master/image/beacons_dashboard.png)
-
-After that, go to Attachments and configure attachment so you can get it's namespace and type:
-
-![](https://github.com/NinevaStudios/unity-google-awareness-api-docs/blob/master/image/beacons_ns_type.png)
+After that, go to Attachments and configure attachment so you can get it's namespace and type.
 
 Only after that you would be able to successfully query the beacons providing the namespace and type:
 
@@ -240,8 +236,6 @@ Example response:
 ```
 
 # Fences API
-
-![](https://github.com/NinevaStudios/unity-google-awareness-api-docs/blob/master/image/fence.png)
 
 # Limitations
 
